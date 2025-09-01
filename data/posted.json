@@ -63,6 +63,46 @@
       "title": "JUN25 FMC1 MINUTES CONFIRMED (OPEN)",
       "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUN25%20FMC1%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
       "posted_at": "2025-09-01T14:14:08.608593"
+    },
+    {
+      "hash": "306823cdec21382645a3251bb7110012",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "AUG25 FMC2 MINUTES UNCONFIRMEDpdf 185.57 KB",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/AUG25%20FMC2%20MINUTES%20UNCONFIRMED.pdf",
+      "posted_at": "2025-09-01T18:46:43.055579"
+    },
+    {
+      "hash": "2efe2f7cbc40d823ab59a9b1c1248161",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "AUG25 FMC1 MINUTES CONFIRMEDpdf 295.56 KB",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/AUG25%20FMC1%20MINUTES%20CONFIRMED.pdf",
+      "posted_at": "2025-09-01T18:46:43.751504"
+    },
+    {
+      "hash": "59c2208a5502b1f8a4dd3af7c12e9440",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUL25 CCL MINUTES CONFIRMED (OPEN)pdf 304.27 KB",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUL25%20CCL%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
+      "posted_at": "2025-09-01T18:46:44.396474"
+    },
+    {
+      "hash": "6b367b6e4e4ae8234999e69622d57128",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUL25 FMC2 MINUTES CONFIRMED (OPEN)pdf 248.85 KB",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUL25%20FMC2%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
+      "posted_at": "2025-09-01T18:46:45.207320"
+    },
+    {
+      "hash": "9753eb5e5681f2d7083558d99c9327d0",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUL25 FMC1 MINUTES CONFIRMEDpdf 320.82 KB",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-07/JUL25%20FMC1%20MINUTES%20CONFIRMED.pdf",
+      "posted_at": "2025-09-01T18:46:45.570742"
     }
   ]
 }
