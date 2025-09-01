@@ -6,6 +6,7 @@ import hashlib
 from atproto import Client
 import os
 import re
+import sys
 
 def load_councils():
     """Load the list of councils from our JSON file"""
@@ -29,15 +30,78 @@ def create_document_hash(url, title, council_id):
 
 def extract_date_info(text):
     """Extract date information from text"""
+    # Look for patterns like "25 August 2025"
+    date_match = re.search(r'(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})', text, re.IGNORECASE)
+    if date_match:
+        return date_match.group(0)
+    
     # Look for patterns like AUG25, JUL25, etc.
     date_match = re.search(r'(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\d{2}', text.upper())
     if date_match:
         return date_match.group(0)
-    # Look for patterns like "26 August 2025"
-    date_match = re.search(r'\d{1,2}\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}', text, re.IGNORECASE)
-    if date_match:
-        return date_match.group(0)
+    
     return ""
+
+def parse_date_for_sorting(date_str):
+    """Convert date string to sortable format"""
+    if not date_str:
+        return ""
+    
+    # Try to parse full dates like "25 August 2025"
+    try:
+        dt = datetime.strptime(date_str, "%d %B %Y")
+        return dt.strftime("%Y%m%d")
+    except:
+        pass
+    
+    # Try to parse short dates like "AUG25"
+    months = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 
+              'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08',
+              'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
+    
+    match = re.match(r'([A-Z]{3})(\d{2})', date_str)
+    if match:
+        month = months.get(match.group(1), '00')
+        year = '20' + match.group(2)
+        return f"{year}{month}01"
+    
+    return ""
+
+def clean_title(title):
+    """Clean up document titles"""
+    # Remove file size info like (PDF, 115MB)
+    title = re.sub(r'\(PDF,\s*[\d\.]+\s*(KB|MB|GB)\)', '', title).strip()
+    # Remove .pdf extension if present
+    title = re.sub(r'\.pdf$', '', title, flags=re.IGNORECASE).strip()
+    return title
+
+def validate_document(doc):
+    """Validate that a document is actually a meeting document"""
+    title_lower = doc['title'].lower()
+    
+    # Exclude documents that aren't actual meeting docs
+    exclude_keywords = [
+        'governance rules',
+        'petition sample',
+        'meeting procedure',
+        'how to',
+        'guide',
+        'template',
+        'form',
+        'application',
+        'policy',
+        'strategy',
+        'annual report'
+    ]
+    
+    if any(keyword in title_lower for keyword in exclude_keywords):
+        return False
+    
+    # Must have date info or clear meeting reference
+    if not doc.get('date_info') and not any(word in title_lower for word in ['meeting', 'council']):
+        return False
+    
+    return True
 
 def scrape_melbourne_council():
     """Scrape City of Melbourne meeting documents"""
@@ -63,8 +127,8 @@ def scrape_melbourne_council():
             if '.pdf' in href.lower() and 's3.ap-southeast-4.amazonaws.com' in href:
                 title = link.get_text(strip=True)
                 
-                # Clean up the title (remove file size info)
-                title = re.sub(r'pdf\s+[\d\.]+\s*(KB|MB)', '', title).strip()
+                # Clean up the title
+                title = clean_title(title)
                 
                 # Determine document type
                 doc_type = None
@@ -85,6 +149,7 @@ def scrape_melbourne_council():
                     'title': title,
                     'type': doc_type,
                     'date_info': date_info,
+                    'sort_date': parse_date_for_sorting(date_info),
                     'council_id': 'melbourne',
                     'council_name': 'City of Melbourne',
                     'found_date': datetime.now().isoformat()
@@ -93,8 +158,12 @@ def scrape_melbourne_council():
                 # Create hash
                 doc['hash'] = create_document_hash(href, title, 'melbourne')
                 
-                documents.append(doc)
-                print(f"  Found: {title}")
+                # Validate document
+                if validate_document(doc):
+                    documents.append(doc)
+                    print(f"  Found: {title}")
+                else:
+                    print(f"  Skipped (not meeting doc): {title}")
         
         return documents
         
@@ -136,6 +205,9 @@ def scrape_generic_council(council):
                     else:
                         href = council['url'] + '/' + href
                 
+                # Clean title
+                text = clean_title(text)
+                
                 # Determine document type
                 doc_type = 'minutes' if 'minutes' in text.lower() else 'agenda'
                 
@@ -148,6 +220,7 @@ def scrape_generic_council(council):
                     'title': text,
                     'type': doc_type,
                     'date_info': date_info,
+                    'sort_date': parse_date_for_sorting(date_info),
                     'council_id': council['id'],
                     'council_name': council['name'],
                     'found_date': datetime.now().isoformat()
@@ -156,11 +229,15 @@ def scrape_generic_council(council):
                 # Create hash
                 doc['hash'] = create_document_hash(href, text, council['id'])
                 
-                documents.append(doc)
-                print(f"  Found: {text[:60]}...")
+                # Validate document
+                if validate_document(doc):
+                    documents.append(doc)
+                    print(f"  Found: {text[:60]}...")
+                else:
+                    print(f"  Skipped (not meeting doc): {text[:60]}...")
         
         if not documents:
-            print(f"  No PDF documents found")
+            print(f"  No valid meeting documents found")
         
         return documents
         
@@ -168,8 +245,44 @@ def scrape_generic_council(council):
         print(f"❌ Error scraping {council['name']}: {e}")
         return []
 
-def post_to_bluesky(doc):
+def post_to_bluesky(doc, test_mode=False):
     """Post a document to BlueSky"""
+    # Create post text
+    emoji = "📋" if doc['type'] == 'agenda' else "📝"
+    
+    # Add date info if available
+    date_str = f" ({doc['date_info']})" if doc.get('date_info') else ""
+    
+    # Create hashtag from council ID
+    council_hashtag = f"#{doc['council_id'].replace('-', '').title()}"
+    
+    # Start with a shorter format to avoid truncation
+    post_text = f"{emoji} {doc['council_name']} - new {doc['type']}{date_str}:\n\n{doc['title']}\n\n🔗 {doc['url']}\n\n#M9Councils {council_hashtag}"
+    
+    # If still too long, trim the title
+    if len(post_text) > 300:
+        # Calculate available space for title
+        base_text = f"{emoji} {doc['council_name']} - new {doc['type']}{date_str}:\n\n\n\n🔗 {doc['url']}\n\n#M9Councils {council_hashtag}"
+        available_space = 300 - len(base_text) - 3  # 3 for "..."
+        
+        if available_space > 20:
+            shortened_title = doc['title'][:available_space] + "..."
+            post_text = f"{emoji} {doc['council_name']} - new {doc['type']}{date_str}:\n\n{shortened_title}\n\n🔗 {doc['url']}\n\n#M9Councils {council_hashtag}"
+    
+    if test_mode:
+        print(f"\n🧪 TEST MODE - Would post:")
+        print(f"   Title: {doc['title']}")
+        print(f"   Type: {doc['type']}")
+        print(f"   Date: {doc['date_info']}")
+        print(f"   Council: {doc['council_name']}")
+        print(f"   URL: {doc['url']}")
+        print(f"   Post length: {len(post_text)} chars")
+        print(f"   Post preview:")
+        print("   " + "-" * 40)
+        print(f"   {post_text}")
+        print("   " + "-" * 40)
+        return True
+    
     handle = os.environ.get('BLUESKY_HANDLE')
     password = os.environ.get('BLUESKY_PASSWORD')
     
@@ -178,27 +291,6 @@ def post_to_bluesky(doc):
         return False
     
     try:
-        # Create post text
-        emoji = "📋" if doc['type'] == 'agenda' else "📝"
-        
-        # Add date info if available
-        date_str = f" ({doc['date_info']})" if doc.get('date_info') else ""
-        
-        # Create hashtag from council ID
-        council_hashtag = f"#{doc['council_id'].replace('-', '').title()}"
-        
-        post_text = f"{emoji} {doc['council_name']} has published new {doc['type']}{date_str}:\n\n{doc['title']}\n\n🔗 View: {doc['url']}\n\n#M9Councils #VicCouncils {council_hashtag}"
-        
-        # Trim if too long (BlueSky has a 300 character limit)
-        if len(post_text) > 300:
-            # Calculate how much we need to trim
-            excess = len(post_text) - 297  # Leave room for "..."
-            # Trim the title
-            title_max = len(doc['title']) - excess
-            if title_max > 10:  # Keep at least 10 chars of title
-                shortened_title = doc['title'][:title_max] + "..."
-                post_text = f"{emoji} {doc['council_name']} - new {doc['type']}{date_str}:\n\n{shortened_title}\n\n🔗 {doc['url']}\n\n#M9Councils {council_hashtag}"
-        
         # Connect and post
         client = Client()
         client.login(handle, password)
@@ -213,7 +305,12 @@ def post_to_bluesky(doc):
 
 def main():
     """Main function to run the scraper"""
+    # Check for test mode
+    test_mode = '--test' in sys.argv
+    
     print("🏛️ LocalGovernmentBot - M9 Council Scanner")
+    if test_mode:
+        print("🧪 RUNNING IN TEST MODE - No posts will be made")
     print("=" * 50)
     
     # Load data
@@ -239,26 +336,42 @@ def main():
     
     print(f"\n📊 Found {len(all_new_documents)} new document(s) across all councils")
     
+    if len(all_new_documents) == 0:
+        print("No new documents to post.")
+        return
+    
+    # Sort by date (newest first)
+    all_new_documents.sort(key=lambda x: x.get('sort_date', ''), reverse=True)
+    
+    # Show summary in test mode
+    if test_mode and len(all_new_documents) > 5:
+        print(f"\n📋 Document summary (showing 5 of {len(all_new_documents)}):")
+        print("   Newest documents will be posted first")
+    
     # Post new documents (limit to 5 per run to avoid spamming)
     posted_count = 0
     for doc in all_new_documents[:5]:
-        if post_to_bluesky(doc):
-            # Add to posted documents
-            posted_docs.append({
-                'hash': doc['hash'],
-                'council': doc['council_id'],
-                'type': doc['type'],
-                'title': doc['title'],
-                'url': doc['url'],
-                'posted_at': datetime.now().isoformat()
-            })
-            
-            # Save after each successful post
-            save_posted_documents(posted_docs)
+        if post_to_bluesky(doc, test_mode=test_mode):
+            if not test_mode:
+                # Add to posted documents
+                posted_docs.append({
+                    'hash': doc['hash'],
+                    'council': doc['council_id'],
+                    'type': doc['type'],
+                    'title': doc['title'],
+                    'url': doc['url'],
+                    'posted_at': datetime.now().isoformat()
+                })
+                
+                # Save after each successful post
+                save_posted_documents(posted_docs)
             posted_count += 1
     
     if posted_count > 0:
-        print(f"\n📮 Posted {posted_count} new document(s)")
+        if test_mode:
+            print(f"\n🧪 Would have posted {posted_count} document(s)")
+        else:
+            print(f"\n📮 Posted {posted_count} new document(s)")
     
     print("\n✅ Scan complete!")
 
