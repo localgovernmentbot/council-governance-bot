@@ -23,6 +23,46 @@
       "title": "JUL25 CCL MINUTES CONFIRMED (OPEN)",
       "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUL25%20CCL%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
       "posted_at": "2025-09-01T13:52:16.289150"
+    },
+    {
+      "hash": "b1032f3e77b4bd25f81f1cb89aee0a35",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUL25 FMC2 MINUTES CONFIRMED (OPEN)",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUL25%20FMC2%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
+      "posted_at": "2025-09-01T14:14:05.459200"
+    },
+    {
+      "hash": "dce16a96bd59a70a7de6fd43d2a68546",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUL25 FMC1 MINUTES CONFIRMED",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-07/JUL25%20FMC1%20MINUTES%20CONFIRMED.pdf",
+      "posted_at": "2025-09-01T14:14:06.255591"
+    },
+    {
+      "hash": "b9acf2e3397f94d158a5b650596dd40c",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUN25 CCL MINUTES CONFIRMED (OPEN)",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-07/JUN25%20CCL%20MINUTES%20FOR%20CONFIRMATION%20%28OPEN%29.pdf",
+      "posted_at": "2025-09-01T14:14:07.177895"
+    },
+    {
+      "hash": "6dc2d48b45a2d8c120f86fa93c27c8e4",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUN25 FMC2 MINUTES CONFIRMED",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-07/JUN25%20FMC2%20MINUTES%20CONFIRMED.pdf",
+      "posted_at": "2025-09-01T14:14:07.849948"
+    },
+    {
+      "hash": "547edf96b0823d26f436885fdcae0e94",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUN25 FMC1 MINUTES CONFIRMED (OPEN)",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUN25%20FMC1%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
+      "posted_at": "2025-09-01T14:14:08.608593"
     }
   ]
 }
