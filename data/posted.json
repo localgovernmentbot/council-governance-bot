@@ -1,3 +1,28 @@
 {
-  "posted_documents": []
+  "posted_documents": [
+    {
+      "hash": "d5d59ced19931889a2d127c11a6d1119",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "AUG25 FMC2 MINUTES UNCONFIRMED",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/AUG25%20FMC2%20MINUTES%20UNCONFIRMED.pdf",
+      "posted_at": "2025-09-01T13:52:14.115427"
+    },
+    {
+      "hash": "c535ffb13777cfac4f2e6e6b17dfbfa3",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "AUG25 FMC1 MINUTES CONFIRMED",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/AUG25%20FMC1%20MINUTES%20CONFIRMED.pdf",
+      "posted_at": "2025-09-01T13:52:15.066623"
+    },
+    {
+      "hash": "3c928a8922f2c69a3333e11ef12e5b69",
+      "council": "melbourne",
+      "type": "minutes",
+      "title": "JUL25 CCL MINUTES CONFIRMED (OPEN)",
+      "url": "https://mvga-prod-files.s3.ap-southeast-4.amazonaws.com/public/2025-08/JUL25%20CCL%20MINUTES%20CONFIRMED%20%28OPEN%29.pdf",
+      "posted_at": "2025-09-01T13:52:16.289150"
+    }
+  ]
 }
