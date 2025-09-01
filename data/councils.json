@@ -18,7 +18,7 @@
       "id": "port-phillip",
       "name": "City of Port Phillip",
       "url": "https://www.portphillip.vic.gov.au",
-      "meetings_url": "https://www.portphillip.vic.gov.au/about-the-council/council-meetings-and-agendas",
+      "meetings_url": "https://www.portphillip.vic.gov.au/about-the-council/council-meetings/meetings-and-agendas/",
       "scraper": "generic_scraper"
     },
     {
@@ -32,7 +32,7 @@
       "id": "darebin",
       "name": "Darebin City Council",
       "url": "https://www.darebin.vic.gov.au",
-      "meetings_url": "https://www.darebin.vic.gov.au/Your-Council/How-council-works/Council-meetings",
+      "meetings_url": "https://www.darebin.vic.gov.au/About-council/Council-structure-and-performance/Council-and-Committee-Meetings/Council-meetings/Meeting-agendas-and-minutes/2025-Council-meeting-agendas-and-minutes",
       "scraper": "generic_scraper"
     },
     {
@@ -46,14 +46,14 @@
       "id": "maribyrnong",
       "name": "City of Maribyrnong",
       "url": "https://www.maribyrnong.vic.gov.au",
-      "meetings_url": "https://www.maribyrnong.vic.gov.au/Council/Council-meetings",
+      "meetings_url": "https://www.maribyrnong.vic.gov.au/About/Council-and-committee-meetings",
       "scraper": "generic_scraper"
     },
     {
       "id": "merri-bek",
       "name": "Merri-bek City Council",
       "url": "https://www.merri-bek.vic.gov.au",
-      "meetings_url": "https://www.merri-bek.vic.gov.au/my-council/council-and-committees/council-meetings/",
+      "meetings_url": "https://www.merri-bek.vic.gov.au/my-council/council-and-committee-meetings/council-meetings/",
       "scraper": "generic_scraper"
     },
     {
