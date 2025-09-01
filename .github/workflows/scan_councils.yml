@@ -1,0 +1,39 @@
+name: Scan Council Websites
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run council scraper
+      env:
+        BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+        BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+      run: |
+        python scripts/scrape_councils.py
+    
+    - name: Commit changes
+      run: |
+        git config --local user.email "LocalGovernmentBot@gmail.com"
+        git config --local user.name "LocalGovernmentBot"
+        git add data/posted.json
+        git diff --staged --quiet || git commit -m "Update posted documents log"
+        git push
