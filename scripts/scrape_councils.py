@@ -5,6 +5,7 @@ from datetime import datetime
 import hashlib
 from atproto import Client
 import os
+import re
 
 def load_councils():
     """Load the list of councils from our JSON file"""
@@ -31,41 +32,58 @@ def scrape_melbourne_council():
     print("🔍 Checking City of Melbourne...")
     
     url = "https://www.melbourne.vic.gov.au/about-council/committees-meetings/meeting-archive/pages/meeting-archive.aspx"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
     
     try:
-        response = requests.get(url, timeout=30)
+        response = requests.get(url, headers=headers, timeout=30)
         soup = BeautifulSoup(response.text, 'html.parser')
         
         documents = []
         
-        # Look for meeting links (this will need adjustment based on actual HTML)
-        # For now, let's look for PDF links
-        for link in soup.find_all('a', href=True):
-            href = link['href']
-            if '.pdf' in href.lower():
-                # Get the full URL
-                if not href.startswith('http'):
-                    href = f"https://www.melbourne.vic.gov.au{href}"
-                
+        # Look for all links
+        all_links = soup.find_all('a', href=True)
+        
+        for link in all_links:
+            href = link.get('href', '')
+            # Look for PDF links from the S3 bucket
+            if '.pdf' in href.lower() and 's3.ap-southeast-4.amazonaws.com' in href:
                 title = link.get_text(strip=True)
-                if title and ('agenda' in title.lower() or 'minutes' in title.lower()):
-                    doc_type = 'agenda' if 'agenda' in title.lower() else 'minutes'
-                    
-                    # Create document info
-                    doc = {
-                        'url': href,
-                        'title': title,
-                        'type': doc_type,
-                        'council_id': 'melbourne',
-                        'council_name': 'City of Melbourne',
-                        'found_date': datetime.now().isoformat()
-                    }
-                    
-                    # Create hash
-                    doc['hash'] = create_document_hash(href, title, 'melbourne')
-                    
-                    documents.append(doc)
-                    print(f"  Found: {title}")
+                
+                # Clean up the title (remove file size info)
+                title = re.sub(r'pdf\s+[\d\.]+\s*(KB|MB)', '', title).strip()
+                
+                # Determine document type
+                doc_type = None
+                if 'MINUTES' in title.upper():
+                    doc_type = 'minutes'
+                elif 'AGENDA' in title.upper():
+                    doc_type = 'agenda'
+                else:
+                    # Skip non-meeting documents
+                    continue
+                
+                # Extract date info if possible
+                date_match = re.search(r'(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\d{2}', title)
+                date_info = date_match.group(0) if date_match else ""
+                
+                # Create document info
+                doc = {
+                    'url': href,
+                    'title': title,
+                    'type': doc_type,
+                    'date_info': date_info,
+                    'council_id': 'melbourne',
+                    'council_name': 'City of Melbourne',
+                    'found_date': datetime.now().isoformat()
+                }
+                
+                # Create hash
+                doc['hash'] = create_document_hash(href, title, 'melbourne')
+                
+                documents.append(doc)
+                print(f"  Found: {title}")
         
         return documents
         
@@ -85,14 +103,21 @@ def post_to_bluesky(doc):
     try:
         # Create post text
         emoji = "📋" if doc['type'] == 'agenda' else "📝"
-        post_text = f"{emoji} {doc['council_name']} has published a new {doc['type']}:\n\n{doc['title']}\n\n🔗 Read more: {doc['url']}\n\n#VicCouncils #LocalGovernment #Melbourne"
+        
+        # Add date info if available
+        date_str = f" ({doc['date_info']})" if doc.get('date_info') else ""
+        
+        post_text = f"{emoji} {doc['council_name']} has published new {doc['type']}{date_str}:\n\n{doc['title']}\n\n🔗 View: {doc['url']}\n\n#VicCouncils #LocalGovernment #Melbourne #Transparency"
         
         # Trim if too long (BlueSky has a 300 character limit)
         if len(post_text) > 300:
-            # Shorten the title
-            max_title_length = 300 - len(post_text) + len(doc['title']) - 3
-            shortened_title = doc['title'][:max_title_length] + "..."
-            post_text = f"{emoji} {doc['council_name']} has published a new {doc['type']}:\n\n{shortened_title}\n\n🔗 Read more: {doc['url']}\n\n#VicCouncils #LocalGovernment"
+            # Calculate how much we need to trim
+            excess = len(post_text) - 297  # Leave room for "..."
+            # Trim the title
+            title_max = len(doc['title']) - excess
+            if title_max > 10:  # Keep at least 10 chars of title
+                shortened_title = doc['title'][:title_max] + "..."
+                post_text = f"{emoji} {doc['council_name']} has published new {doc['type']}{date_str}:\n\n{shortened_title}\n\n🔗 View: {doc['url']}\n\n#VicCouncils #LocalGov"
         
         # Connect and post
         client = Client()
