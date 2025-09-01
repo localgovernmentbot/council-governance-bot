@@ -1,0 +1,11 @@
+{
+  "councils": [
+    {
+      "id": "melbourne",
+      "name": "City of Melbourne",
+      "url": "https://www.melbourne.vic.gov.au",
+      "meetings_url": "https://www.melbourne.vic.gov.au/about-council/committees-meetings/meeting-archive/pages/meeting-archive.aspx",
+      "last_checked": null
+    }
+  ]
+}
