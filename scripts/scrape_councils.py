@@ -69,8 +69,9 @@ def parse_date_for_sorting(date_str):
 
 def clean_title(title):
     """Clean up document titles"""
-    # Remove file size info like (PDF, 115MB)
+    # Remove file size info like (PDF, 115MB) or pdf 185.57 KB
     title = re.sub(r'\(PDF,\s*[\d\.]+\s*(KB|MB|GB)\)', '', title).strip()
+    title = re.sub(r'pdf\s+[\d\.]+\s*(KB|MB|GB)', '', title, flags=re.IGNORECASE).strip()
     # Remove .pdf extension if present
     title = re.sub(r'\.pdf$', '', title, flags=re.IGNORECASE).strip()
     return title
