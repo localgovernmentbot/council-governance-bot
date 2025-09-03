@@ -172,6 +172,82 @@ def scrape_melbourne_council():
         print(f"❌ Error scraping Melbourne: {e}")
         return []
 
+def scrape_wyndham_council():
+    """Scrape Wyndham City Council meeting documents"""
+    print("🔍 Checking Wyndham City Council...")
+    
+    url = "https://www.wyndham.vic.gov.au/about-council/your-council/council-and-committee-meetings/council-planning-committee-contracts"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        documents = []
+        
+        # Look for all PDF links
+        pdf_links = soup.find_all('a', href=lambda x: x and '.pdf' in x.lower())
+        
+        for link in pdf_links:
+            href = link.get('href', '')
+            text = link.get_text(strip=True)
+            
+            # Skip if not a meeting document
+            if text.lower() in ['view agenda', 'view minutes']:
+                # Extract date from URL (e.g., /2021-12/ or /2022-01/)
+                date_match = re.search(r'/(\d{4})-(\d{2})/', href)
+                if date_match:
+                    year = date_match.group(1)
+                    month_num = date_match.group(2)
+                    
+                    # Convert to month name
+                    months = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December']
+                    try:
+                        month_name = months[int(month_num) - 1]
+                        date_info = f"{month_name} {year}"
+                    except:
+                        date_info = f"{year}-{month_num}"
+                    
+                    # Determine document type
+                    doc_type = 'agenda' if 'agenda' in text.lower() else 'minutes'
+                    
+                    # Create title with date
+                    title = f"Council Meeting {text} - {date_info}"
+                    
+                    # Make URL absolute
+                    if not href.startswith('http'):
+                        href = "https://www.wyndham.vic.gov.au" + href
+                    
+                    # Create document info
+                    doc = {
+                        'url': href,
+                        'title': title,
+                        'type': doc_type,
+                        'date_info': date_info,
+                        'sort_date': f"{year}{month_num}01",
+                        'council_id': 'wyndham',
+                        'council_name': 'Wyndham City Council',
+                        'found_date': datetime.now().isoformat()
+                    }
+                    
+                    # Create hash
+                    doc['hash'] = create_document_hash(href, title, 'wyndham')
+                    
+                    documents.append(doc)
+                    print(f"  Found: {title}")
+        
+        if not documents:
+            print(f"  No valid meeting documents found")
+        
+        return documents
+        
+    except Exception as e:
+        print(f"❌ Error scraping Wyndham: {e}")
+        return []
+
 def scrape_generic_council(council):
     """Generic scraper for councils with standard PDF links"""
     print(f"🔍 Checking {council['name']}...")
@@ -327,6 +403,8 @@ def main():
     for council in councils:
         if council.get('scraper') == 'melbourne_scraper':
             docs = scrape_melbourne_council()
+        elif council['id'] == 'wyndham':
+            docs = scrape_wyndham_council()
         else:
             docs = scrape_generic_council(council)
         

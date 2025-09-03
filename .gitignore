@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Local data outputs
+m9_scraper_results.json
+posted_bluesky.json
+downloaded_files/
+
+# Logs
+logs/
+
+# Local secrets
+.env

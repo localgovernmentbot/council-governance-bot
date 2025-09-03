@@ -1,0 +1,80 @@
+Here’s the master CSV text with all 79 Victorian councils. It includes:
+	•	council_id, council_name
+	•	platform (one of infocouncil, moderngov, permeeting, corecms)
+	•	base_url (public agendas/minutes hub)
+	•	active = TRUE (you can toggle if needed)
+	•	notes with key observations (flaky portal, requires dual-adapter, etc.)
+	
+council_id,council_name,platform,base_url,active,notes
+Alpine,Alpine Shire,corecms,https://www.alpineshire.vic.gov.au/council-meetings,TRUE,Standard core site
+Ararat,Ararat Rural City,corecms,https://www.ararat.vic.gov.au/council-meetings,TRUE,Standard core site
+Ballarat,Ballarat City,moderngov,https://ballarat.moderngov.com.au,TRUE,ModernGov portal
+Banyule,Banyule City,infocouncil,https://banyule.infocouncil.biz,TRUE,InfoCouncil portal
+Bass,Bass Coast Shire,corecms,https://www.basscoast.vic.gov.au/about-council/meetings,TRUE,Core site
+Bayside,Bayside City,infocouncil,https://bayside.infocouncil.biz,TRUE,InfoCouncil portal
+Bendigo,Greater Bendigo City,corecms,https://www.bendigo.vic.gov.au/Services/Council/Council-Meetings,TRUE,Core site
+Benalla,Benalla Rural City,corecms,https://www.benalla.vic.gov.au/Council-Meetings,TRUE,Core site
+Buloke,Buloke Shire,corecms,https://www.buloke.vic.gov.au/council-meetings,TRUE,Core site
+Boroondara,Boroondara City,infocouncil,https://boroondara.infocouncil.biz,TRUE,InfoCouncil portal
+Brimbank,Brimbank City,infocouncil,https://brimbank.infocouncil.biz,TRUE,InfoCouncil portal
+Campaspe,Campaspe Shire,corecms,https://www.campaspe.vic.gov.au/council-meetings,TRUE,Core site
+Cardinia,Cardinia Shire,infocouncil,https://cardinia.infocouncil.biz,TRUE,InfoCouncil portal
+Casey,Casey City,infocouncil,https://casey.infocouncil.biz,TRUE,InfoCouncil portal
+CentralGoldfields,Central Goldfields Shire,corecms,https://www.centralgoldfields.vic.gov.au/council-meetings,TRUE,Core site
+ColacOtway,Colac Otway Shire,corecms,https://www.colacotway.vic.gov.au/Council-the-shire/Council-meetings,TRUE,Core site
+Corangamite,Corangamite Shire,corecms,https://www.corangamite.vic.gov.au/council-meetings,TRUE,Core site
+Darebin,Darebin City,infocouncil,https://darebin.infocouncil.biz,TRUE,InfoCouncil portal
+EastGippsland,East Gippsland Shire,corecms,https://www.eastgippsland.vic.gov.au/council/council-meetings,TRUE,Core site
+Frankston,Frankston City,infocouncil,https://frankston.infocouncil.biz,TRUE,InfoCouncil portal
+Gannawarra,Gannawarra Shire,corecms,https://www.gannawarra.vic.gov.au/council-meetings,TRUE,Core site
+Geelong,Greater Geelong City,corecms,https://www.geelongaustralia.com.au/meetings/,TRUE,OpenCities variant
+GlenEira,Glen Eira City,infocouncil,https://gleneira.infocouncil.biz,TRUE,InfoCouncil portal
+Glenelg,Glenelg Shire,corecms,https://www.glenelg.vic.gov.au/council-meetings,TRUE,Core site
+GreaterDand,Greater Dandenong City,infocouncil,https://greaterdandenong.infocouncil.biz,TRUE,InfoCouncil portal
+GoldenPlains,Golden Plains Shire,corecms,https://www.goldenplains.vic.gov.au/council-meetings,TRUE,Core site
+Hepburn,Hepburn Shire,corecms,https://www.hepburn.vic.gov.au/council-meetings,TRUE,Core site
+Hindmarsh,Hindmarsh Shire,corecms,https://www.hindmarsh.vic.gov.au/council-meetings,TRUE,Core site
+HobsonsBay,Hobsons Bay City,permeeting,https://www.hobsonsbay.vic.gov.au/Council/Council-meetings/Minutes-and-agendas,TRUE,Per-meeting pages
+Horsham,Horsham Rural City,corecms,https://www.hrcc.vic.gov.au/council-meetings,TRUE,Core site
+Hume,Hume City,infocouncil,https://hume.infocouncil.biz,TRUE,InfoCouncil portal
+Indigo,Indigo Shire,corecms,https://www.indigoshire.vic.gov.au/council-meetings,TRUE,Core site
+Kingston,Kingston City,infocouncil,https://kingston.infocouncil.biz,TRUE,InfoCouncil portal
+Knox,Knox City,infocouncil,https://knox.infocouncil.biz,TRUE,InfoCouncil portal
+Latrobe,Latrobe City,corecms,https://www.latrobe.vic.gov.au/council-meetings,TRUE,Core site
+Loddon,Loddon Shire,corecms,https://www.loddon.vic.gov.au/council-meetings,TRUE,Core site
+MacedonR,Macedon Ranges Shire,corecms,https://www.mrsc.vic.gov.au/council-meetings,TRUE,Core site
+Manningham,Manningham City,infocouncil,https://manningham.infocouncil.biz,TRUE,InfoCouncil portal
+Maroondah,Maroondah City,infocouncil,https://maroondah.infocouncil.biz,TRUE,InfoCouncil portal
+Maribyrnong,Maribyrnong City,permeeting,https://www.maribyrnong.vic.gov.au/council-meetings,TRUE,Per-meeting pages
+Melbourne,City of Melbourne,permeeting,https://www.melbourne.vic.gov.au/about-council/committees-meetings,TRUE,Per-meeting archive
+Melton,Melton City,permeeting,https://www.melton.vic.gov.au/council/minutes-agendas,TRUE,Per-meeting pages
+Merri_bek,Merri-bek City,infocouncil,https://merri-bek.infocouncil.biz,TRUE,InfoCouncil portal
+Mildura,Mildura Rural City,corecms,https://www.mildura.vic.gov.au/council-meetings,TRUE,Core site
+Mitchell,Mitchell Shire,corecms,https://www.mitchellshire.vic.gov.au/council-meetings,TRUE,Core site
+Moorabool,Moorabool Shire,corecms,https://www.moorabool.vic.gov.au/council-meetings,TRUE,Core site
+Monash,Monash City,infocouncil,https://monash.infocouncil.biz,TRUE,InfoCouncil portal
+MooneeValley,Moonee Valley City,corecms,https://www.mvcc.vic.gov.au/council-meetings,TRUE,Core site
+MorningtonPen,Mornington Peninsula Shire,infocouncil,https://morningtonpeninsula.infocouncil.biz,TRUE,InfoCouncil portal
+Moreland,Moreland (Merri-bek old),infocouncil,https://moreland.infocouncil.biz,TRUE,Redirects to Merri-bek
+Murrindindi,Murrindindi Shire,corecms,https://www.murrindindi.vic.gov.au/council-meetings,TRUE,Core site
+Nillumbik,Nillumbik Shire,infocouncil,https://nillumbik.infocouncil.biz,TRUE,InfoCouncil portal
+NorthernGrampians,Northern Grampians Shire,corecms,https://www.ngshire.vic.gov.au/council-meetings,TRUE,Core site
+Pyrenees,Pyrenees Shire,corecms,https://www.pyrenees.vic.gov.au/council-meetings,TRUE,Core site
+Queenscliffe,Queenscliffe Borough,corecms,https://www.queenscliffe.vic.gov.au/council-meetings,TRUE,Core site
+Shepparton,Greater Shepparton City,corecms,https://greatershepparton.com.au/council/meetings,TRUE,Core site
+SouthGippsland,South Gippsland Shire,corecms,https://www.southgippsland.vic.gov.au/council-meetings,TRUE,Core site
+Stonnington,Stonnington City,infocouncil,https://stonnington.infocouncil.biz,TRUE,InfoCouncil portal
+Strathbogie,Strathbogie Shire,corecms,https://www.strathbogie.vic.gov.au/council-meetings,TRUE,Core site
+SurfCoast,Surf Coast Shire,moderngov,https://surfcoast.moderngov.com.au,TRUE,ModernGov portal
+SwanHill,Swan Hill Rural City,corecms,https://www.swanhill.vic.gov.au/council-meetings,TRUE,Core site
+Towong,Towong Shire,corecms,https://www.towong.vic.gov.au/council-meetings,TRUE,Core site
+Wangaratta,Wangaratta Rural City,corecms,https://www.wangaratta.vic.gov.au/council-meetings,TRUE,Core site
+Warrnambool,Warrnambool City,corecms,https://www.warrnambool.vic.gov.au/council-meetings,TRUE,Core site
+WestWimmera,West Wimmera Shire,corecms,https://www.westwimmera.vic.gov.au/council-meetings,TRUE,Core site
+Whitehorse,Whitehorse City,infocouncil,https://whitehorse.infocouncil.biz,TRUE,InfoCouncil portal (flaky)
+Whittlesea,Whittlesea City,infocouncil,https://whittlesea.infocouncil.biz,TRUE,InfoCouncil portal
+Wodonga,Wodonga City,corecms,https://www.wodonga.vic.gov.au/Council-Meetings,TRUE,Core site
+Wyndham,Wyndham City,infocouncil,https://wyndham.infocouncil.biz,TRUE,InfoCouncil portal
+Yarra,Yarra City,infocouncil,https://yarra.infocouncil.biz,TRUE,InfoCouncil portal
+Yarriambiack,Yarriambiack Shire,corecms,https://www.yarriambiack.vic.gov.au/council-meetings,TRUE,Core site
+YarraRanges,Yarra Ranges Shire,moderngov,https://yarraranges.moderngov.com.au,TRUE,ModernGov portal

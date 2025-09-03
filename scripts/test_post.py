@@ -16,11 +16,14 @@ def test_bluesky_connection():
         # Create client and login
         client = Client()
         client.login(handle, password)
-        print("✅ Successfully connected to BlueSky!")
+        print("✅ Successfully authenticated to BlueSky (no post sent)")
         
-        # Post a test message
-        client.send_post(text="🏛️ LocalGovernmentBot is being set up! This is a test post.")
-        print("✅ Test post sent!")
+        # Optional: fetch your own profile as a harmless check
+        try:
+            me = client.me
+            print(f"Account: {me.did}")
+        except Exception:
+            pass
         
         return True
         

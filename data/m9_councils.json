@@ -1,0 +1,103 @@
+{
+  "m9_councils": [
+    {
+      "council_id": "MELB",
+      "name": "City of Melbourne",
+      "base_url": "https://www.melbourne.vic.gov.au",
+      "meetings_url": "https://www.melbourne.vic.gov.au/about-council/committees-meetings/meeting-archive/pages/meeting-archive.aspx",
+      "platform": "permeeting",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "DARE",
+      "name": "Darebin City Council", 
+      "base_url": "https://www.darebin.vic.gov.au",
+      "meetings_url": "https://www.darebin.vic.gov.au/About-council/Council-structure-and-performance/Council-and-Committee-Meetings/Council-meetings/Meeting-agendas-and-minutes/2025-Council-meeting-agendas-and-minutes",
+      "platform": "infocouncil",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "HBAY",
+      "name": "Hobsons Bay City Council",
+      "base_url": "https://www.hobsonsbay.vic.gov.au",
+      "meetings_url": "https://www.hobsonsbay.vic.gov.au/Council/Council-meetings/Minutes-and-agendas",
+      "platform": "permeeting",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "MARI",
+      "name": "Maribyrnong City Council",
+      "base_url": "https://www.maribyrnong.vic.gov.au",
+      "meetings_url": "https://www.maribyrnong.vic.gov.au/council-meetings",
+      "platform": "permeeting",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "MERR",
+      "name": "Merri-bek City Council",
+      "base_url": "https://www.merri-bek.vic.gov.au",
+      "meetings_url": "https://merri-bek.infocouncil.biz",
+      "platform": "infocouncil",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "MOON",
+      "name": "Moonee Valley City Council",
+      "base_url": "https://www.mvcc.vic.gov.au",
+      "meetings_url": "https://www.mvcc.vic.gov.au/council-meetings",
+      "platform": "corecms",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "PORT",
+      "name": "Port Phillip City Council",
+      "base_url": "https://www.portphillip.vic.gov.au",
+      "meetings_url": "https://www.portphillip.vic.gov.au/about-the-council/meetings-and-minutes",
+      "platform": "custom",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "STON",
+      "name": "Stonnington City Council",
+      "base_url": "https://www.stonnington.vic.gov.au",
+      "meetings_url": "https://stonnington.infocouncil.biz",
+      "platform": "infocouncil",
+      "yimby_scraper": true
+    },
+    {
+      "council_id": "YARR",
+      "name": "Yarra City Council",
+      "base_url": "https://www.yarracity.vic.gov.au",
+      "meetings_url": "https://www.yarracity.vic.gov.au/about-us/council-and-committee-meetings",
+      "platform": "custom",
+      "yimby_scraper": true
+    }
+  ],
+  "document_types": [
+    "Council Meeting Agenda",
+    "Council Meeting Minutes",
+    "Delegated Committee Agenda",
+    "Delegated Committee Minutes",
+    "Special Meeting Agenda",
+    "Special Meeting Minutes"
+  ],
+  "significance_thresholds": {
+    "budget_impact": 50000,
+    "affected_residents": 100,
+    "consultation_days": 14
+  },
+  "hashtags": {
+    "base": ["#M9Councils", "#LocalGovTransparency", "#MelbourneCouncils"],
+    "council_specific": {
+      "MELB": "#MelbourneCouncil",
+      "DARE": "#DarebinCouncil",
+      "HBAY": "#HobsonsBayCouncil",
+      "MARI": "#MaribyrnongCouncil",
+      "MERR": "#MerribekCouncil",
+      "MOON": "#MooneeValleyCouncil",
+      "PORT": "#PortPhillipCouncil",
+      "STON": "#StonningtonCouncil",
+      "YARR": "#YarraCouncil"
+    }
+  }
+}
