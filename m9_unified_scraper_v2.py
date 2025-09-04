@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
 Final unified M9 scraper - runs all 9 councils
+Updated to include fixed Yarra and Stonnington scrapers
 """
 
 import sys
+import os
 sys.path.append('src/scrapers')
 
 # Import working scrapers from existing modules
@@ -12,15 +14,18 @@ from darebin_m9 import DarebinScraper
 from hobsonsbay_m9_fixed import HobsonsBayScraper
 from m9_adapted import MaribyrnongScraper, MerribekScraper
 from moonee_valley_fixed import MooneeValleyFixedScraper
-from yarra_stonnington_fixed import YarraFixedScraper, StonningtonFixedScraper
 from m9_final_three_complete import PortPhillipFinalScraper
+
+# Import the fixed Yarra and Stonnington scrapers
+sys.path.append('.')
+from yarra_stonnington_fixed import YarraFixedScraper, StonningtonFixedScraper
 
 print("M9 COUNCIL BOT - FINAL UNIFIED SCRAPER (v2)")
 print("=" * 60)
 print("\nRunning all 9 metropolitan Melbourne councils...")
-print("Using improved scrapers for Yarra and Stonnington\n")
+print("Using fixed scrapers for Yarra and Stonnington\n")
 
-# All 9 M9 councils
+# All 9 M9 councils with updated scrapers
 scrapers = [
     ("Melbourne", MelbourneScraper),
     ("Darebin", DarebinScraper),
@@ -28,8 +33,8 @@ scrapers = [
     ("Maribyrnong", MaribyrnongScraper),
     ("Merri-bek", MerribekScraper),
     ("Moonee Valley", MooneeValleyFixedScraper),
-    ("Yarra", YarraFixedScraper),  # Using improved scraper
-    ("Stonnington", StonningtonFixedScraper),  # Using improved scraper
+    ("Yarra", YarraFixedScraper),  # Using fixed scraper
+    ("Stonnington", StonningtonFixedScraper),  # Using fixed scraper
     ("Port Phillip", PortPhillipFinalScraper),
 ]
 
@@ -83,6 +88,13 @@ for stat in sorted(council_stats, key=lambda x: x['total'], reverse=True):
     status = "✓" if stat['working'] else "✗"
     print(f"  {status} {stat['name']:15} - {stat['total']:3} documents")
 
+# Check if we achieved 9/9
+working_count = sum(1 for c in council_stats if c['working'])
+if working_count == 9:
+    print("\n" + "🎉" * 20)
+    print("SUCCESS! ALL 9 COUNCILS ARE NOW WORKING!")
+    print("🎉" * 20)
+
 # Save results
 import json
 from datetime import datetime
@@ -110,16 +122,16 @@ output_data = {
 }
 
 # Save to file
-with open('m9_scraper_results.json', 'w') as f:
+output_file = 'm9_scraper_results_v2.json'
+with open(output_file, 'w') as f:
     json.dump(output_data, f, indent=2)
 
-print(f"\nResults saved to m9_scraper_results.json")
-# Check if we achieved 9/9
-working_count = sum(1 for c in council_stats if c['working'])
-if working_count == 9:
-    print("\n" + "🎉" * 20)
-    print("SUCCESS! ALL 9 COUNCILS ARE NOW WORKING!")
-    print("🎉" * 20)
-
+print(f"\nResults saved to {output_file}")
 print(f"\nFINAL STATUS: {working_count}/9 councils operational!")
 print(f"Total of {len(all_documents)} documents ready for processing.")
+
+if working_count < 9:
+    print("\nCouncils still needing attention:")
+    for stat in council_stats:
+        if not stat['working']:
+            print(f"  - {stat['name']}")
