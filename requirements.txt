@@ -6,3 +6,4 @@ PyPDF2==3.0.1
 anthropic==0.25.0
 # BlueSky client; newer versions fix API model mismatches
 atproto>=0.0.49,<1.0
+selenium>=4.12.0
