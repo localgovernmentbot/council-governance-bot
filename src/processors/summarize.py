@@ -8,7 +8,7 @@ without hashtag spam.
 
 import re
 from typing import List, Tuple, Dict, Optional, Tuple
-from src.utils.date_format import format_long_date
+from src.utils.date_format import format_long_date, rewrite_date_in_title
 
 
 COUNCIL_TAGS = {
@@ -299,7 +299,8 @@ def compose_post_text(council_name: str, doc_type: str, title: str, date_str: st
 
     # Fit within 300 chars total
     budget = 300 - (len(header) + 2 + len('\n\n') + len(footer))
-    t = title.strip()
+    # Rewrite any ISO date in the title to long form to match header
+    t = rewrite_date_in_title(title.strip(), date_str)
     if len(t) > budget:
         t = t[:max(0, budget - 3)] + '...'
 

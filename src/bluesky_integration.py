@@ -12,7 +12,7 @@ from atproto import Client, models
 import hashlib
 import json
 from src.utils.url_canonicalize import canonicalize_doc_url
-from src.utils.date_format import format_long_date
+from src.utils.date_format import format_long_date, rewrite_date_in_title
 
 
 class BlueSkyPoster:
@@ -89,8 +89,10 @@ class BlueSkyPoster:
         date_info = f" ({pretty_date})" if pretty_date else ""
         hashtag = f"#{council_hashtag}" if council_hashtag else ""
         header = f"{council_name} - new {doc_type}{date_info}:"
+        # Rewrite date in title to long form as well
+        doc_title_fmt = rewrite_date_in_title(doc_title, date_str)
         footer = f"{doc_url}\n\n#VicCouncils {hashtag} #OpenGov".strip()
-        post_text = f"{header}\n\n{doc_title}\n\n{footer}"
+        post_text = f"{header}\n\n{doc_title_fmt}\n\n{footer}"
         
         # Trim if too long (300 char limit)
         if len(post_text) > 300:
@@ -104,7 +106,27 @@ class BlueSkyPoster:
         try:
             client = Client()
             client.login(self.handle, self.password)
-            resp = client.send_post(text=post_text)
+
+            # Build facets to ensure the URL is clickable across clients
+            facets = None
+            try:
+                try:
+                    from atproto_client.utils.text_builder import TextBuilder  # type: ignore
+                except Exception:
+                    from atproto.utils.text_builder import TextBuilder  # type: ignore
+                tb = TextBuilder()
+                tb.text(f"{header}\n\n{doc_title_fmt}\n\n")
+                tb.link(doc_url)
+                tb.text(f"\n\n#VicCouncils {hashtag} #OpenGov".strip())
+                post_text = tb.get_text()
+                facets = tb.get_facets()
+            except Exception:
+                pass  # Fallback to plain text; most clients autolink
+
+            if facets:
+                resp = client.send_post(text=post_text, facets=facets)
+            else:
+                resp = client.send_post(text=post_text)
 
             # Mark as posted and index the root post
             # Save both canonical and raw hashes for backward compatibility
