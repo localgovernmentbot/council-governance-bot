@@ -1,8 +1,8 @@
 {
-  "scrape_date": "2025-09-04T05:39:43.048989",
+  "scrape_date": "2025-09-04T06:56:10.596513",
   "total_councils": 9,
   "working_councils": 5,
-  "total_documents": 293,
+  "total_documents": 294,
   "council_stats": [
     {
       "name": "Melbourne",
@@ -62,9 +62,9 @@
     },
     {
       "name": "Port Phillip",
-      "total": 17,
+      "total": 18,
       "agendas": 9,
-      "minutes": 8,
+      "minutes": 9,
       "working": true
     }
   ],
@@ -2837,6 +2837,16 @@
       "title": "Ordinary Council Meeting Agenda - 2025-09-02",
       "date": "2025-09-02",
       "url": "https://portphillip.infocouncil.biz/RedirectToDoc.aspx?URL=Open/2025/09/ORD_02092025_AGN_AT.PDF",
+      "webpage_url": "https://portphillip.infocouncil.biz"
+    },
+    {
+      "council_id": "PORT",
+      "council_name": "Port Phillip City Council",
+      "document_type": "minutes",
+      "meeting_type": "ordinary",
+      "title": "Ordinary Council Meeting Minutes - 2025-09-02",
+      "date": "2025-09-02",
+      "url": "https://portphillip.infocouncil.biz/RedirectToDoc.aspx?URL=Open/2025/09/ORD_02092025_MIN.PDF",
       "webpage_url": "https://portphillip.infocouncil.biz"
     },
     {
