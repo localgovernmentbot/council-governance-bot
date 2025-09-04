@@ -8,6 +8,7 @@ without hashtag spam.
 
 import re
 from typing import List, Tuple, Dict, Optional, Tuple
+import os
 from src.utils.date_format import format_long_date, rewrite_date_in_title
 
 
@@ -91,13 +92,37 @@ def infer_topics(text: str) -> List[str]:
 
 
 def choose_hashtags(council_name: str, topics: List[str]) -> List[str]:
-    """Compose 2–3 hashtags: #VicCouncils, council tag, and one topical if present."""
-    tags = ['#VicCouncils']
+    """Compose up to 3 hashtags following this pattern:
+
+    - Core: always include #VicCouncils
+    - Council/location: include the council tag if known (e.g., #PortPhillip)
+    - Third slot: prefer a topical tag if detected; otherwise include a second core tag
+      chosen from #LocalGov or #OpenGovAU (default #OpenGovAU). Controlled by env
+      CORE_SECOND_TAG.
+    """
+    tags: List[str] = ['#VicCouncils']
+    # Council/location
     council_tag = COUNCIL_TAGS.get(council_name) or COUNCIL_TAGS.get(council_name.split(' (')[0], '')
     if council_tag:
         tags.append(council_tag)
+
+    # Choose topical if available, else second core
+    second_core_default = os.environ.get('CORE_SECOND_TAG', '#OpenGovAU')
+    second_core = second_core_default if second_core_default in ('#LocalGov', '#OpenGovAU') else '#OpenGovAU'
+
     if topics:
-        tags.append(topics[0])
+        top = topics[0]
+        # Avoid duplicating a core tag if the topic happens to be one
+        if top not in tags and top not in ('#LocalGov', '#OpenGovAU', '#VicCouncils'):
+            tags.append(top)
+        else:
+            # Fallback to second core if topic is a core or duplicate
+            if second_core not in tags:
+                tags.append(second_core)
+    else:
+        if second_core not in tags:
+            tags.append(second_core)
+
     return tags[:3]
 
 
