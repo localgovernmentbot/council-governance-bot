@@ -10,6 +10,7 @@ from dateutil.parser import parse as parse_date
 from dataclasses import dataclass
 from typing import Optional, List
 import requests
+import cloudscraper
 
 
 @dataclass
@@ -33,18 +34,47 @@ class BaseM9Scraper:
         self.council_name = council_name
         self.base_url = base_url
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-AU,en;q=0.9',
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
         }
-    
-    def fetch_page(self, url: str) -> str:
-        """Fetch a page with requests"""
+        # Create a Cloudscraper session to better handle 403/5xx and anti-bot
         try:
-            response = requests.get(url, headers=self.headers, timeout=30)
-            response.raise_for_status()
-            return response.text
+            self.session = cloudscraper.create_scraper()
+            self.session.headers.update(self.headers)
+        except Exception:
+            self.session = requests.Session()
+            self.session.headers.update(self.headers)
+    
+    def fetch_page(self, url: str, referer: Optional[str] = None) -> str:
+        """Fetch a page using a session that can bypass simple 403s."""
+        try:
+            headers = dict(self.headers)
+            if referer:
+                headers['Referer'] = referer
+            resp = self.session.get(url, headers=headers, timeout=30)
+            resp.raise_for_status()
+            return resp.text
         except Exception as e:
             print(f"Error fetching {url}: {e}")
             return ""
+
+    def probe_url(self, url: str, expect_pdf: bool = True) -> bool:
+        """HEAD probe to check if a URL exists (and optionally is a PDF)."""
+        try:
+            test_headers = dict(self.headers)
+            # Use a range request to avoid full download when some hosts disallow HEAD
+            test_headers['Range'] = 'bytes=0-0'
+            resp = self.session.get(url, headers=test_headers, timeout=8, allow_redirects=True)
+            ctype = resp.headers.get('Content-Type', '').lower()
+            ok = resp.status_code in (200, 206)
+            if expect_pdf:
+                return ok and ('pdf' in ctype or url.lower().endswith('.pdf'))
+            return ok
+        except Exception:
+            return False
     
     def extract_date(self, text: str) -> Optional[str]:
         """Extract date from text and return in YYYY-MM-DD format"""

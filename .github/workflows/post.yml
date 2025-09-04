@@ -44,6 +44,17 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add posted_bluesky.json m9_scraper_results.json || true
+          # Force-add JSON outputs even if gitignored
+          git add -f posted_bluesky.json m9_scraper_results.json || true
           git commit -m "Update posted state [skip ci]" || echo "No changes"
           git push
+
+      - name: Upload results artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-results-${{ github.run_number }}
+          path: |
+            m9_scraper_results.json
+            posted_bluesky.json
+          if-no-files-found: ignore
+          retention-days: 14

@@ -5,6 +5,7 @@ Combining web scraping with direct URL pattern probing
 """
 
 import requests
+import cloudscraper
 from bs4 import BeautifulSoup
 import re
 from datetime import datetime, timedelta
@@ -30,9 +31,15 @@ class YarraFixedScraper(BaseM9Scraper):
     def probe_url(self, url):
         """Check if a URL exists and is a PDF"""
         try:
-            response = requests.head(url, headers=self.headers, timeout=3, allow_redirects=True)
-            content_type = response.headers.get('Content-Type', '').lower()
-            return response.status_code in (200, 206) and 'pdf' in content_type
+            # Prefer a Range GET via a session to avoid full download and HEAD blocks
+            if not getattr(self, 'session', None):
+                self.session = cloudscraper.create_scraper()
+                self.session.headers.update(self.headers)
+            test_headers = dict(self.headers)
+            test_headers['Range'] = 'bytes=0-0'
+            r = self.session.get(url, headers=test_headers, timeout=8, allow_redirects=True)
+            ctype = r.headers.get('Content-Type', '').lower()
+            return r.status_code in (200, 206) and ('pdf' in ctype or url.lower().endswith('.pdf'))
         except:
             return False
     
@@ -45,9 +52,9 @@ class YarraFixedScraper(BaseM9Scraper):
         meetings_url = "https://www.yarracity.vic.gov.au/about-us/council-meetings"
         
         try:
-            response = requests.get(meetings_url, headers=self.headers, timeout=30)
-            if response.status_code == 200:
-                soup = BeautifulSoup(response.text, 'html.parser')
+            html = self.fetch_page(meetings_url)
+            if html:
+                soup = BeautifulSoup(html, 'html.parser')
                 
                 # Find all links that might be PDFs
                 for link in soup.find_all('a', href=True):
@@ -129,6 +136,8 @@ class YarraFixedScraper(BaseM9Scraper):
                     patterns = [
                         f"/sites/default/files/{year_month}/{year}{month}{day}-council-agenda.pdf",
                         f"/sites/default/files/{year_month}/{year}{month}{day}_council_agenda.pdf",
+                        f"/sites/default/files/{year_month}/{year}{month}{day}-council-meeting-agenda.pdf",
+                        f"/sites/default/files/{year_month}/{year}{month}{day}_council_meeting_agenda.pdf",
                         f"/sites/default/files/{year_month}/{year}{month}{day}-council-minutes.pdf",
                         f"/sites/default/files/{year_month}/{year}{month}{day}_council_minutes.pdf",
                         f"/sites/default/files/{year_month}/council-meeting-agenda-{day}-{date.strftime('%B').lower()}-{year}.pdf",
@@ -184,9 +193,12 @@ class StonningtonFixedScraper(BaseM9Scraper):
             # Use Range header to avoid downloading full files
             test_headers = dict(self.headers)
             test_headers['Range'] = 'bytes=0-0'
-            response = requests.get(url, headers=test_headers, timeout=3, allow_redirects=True)
-            content_type = response.headers.get('Content-Type', '').lower()
-            return response.status_code in (200, 206) and 'pdf' in content_type
+            if not getattr(self, 'session', None):
+                self.session = cloudscraper.create_scraper()
+                self.session.headers.update(self.headers)
+            r = self.session.get(url, headers=test_headers, timeout=8, allow_redirects=True)
+            content_type = r.headers.get('Content-Type', '').lower()
+            return r.status_code in (200, 206) and ('pdf' in content_type or url.lower().endswith('.pdf'))
         except:
             return False
     
@@ -229,6 +241,8 @@ class StonningtonFixedScraper(BaseM9Scraper):
                 (f"{base}/{year}/{dd}-{month_full}-{year}/minutes.pdf", 'minutes'),
                 (f"{base}/{year}/{dd}-{month_full}-{year}/council-meeting-agenda-{dd}-{month_full}-{year}.pdf", 'agenda'),
                 (f"{base}/{year}/{dd}-{month_full}-{year}/council-meeting-minutes-{dd}-{month_full}-{year}.pdf", 'minutes'),
+                (f"{base}/{year}/{dd}-{month_short}-{year}/council-meeting-agenda-{dd}-{month_short}-{year}.pdf", 'agenda'),
+                (f"{base}/{year}/{dd}-{month_short}-{year}/council-meeting-minutes-{dd}-{month_short}-{year}.pdf", 'minutes'),
             ]
             
             for url, doc_type in patterns:
@@ -250,8 +264,8 @@ class StonningtonFixedScraper(BaseM9Scraper):
         # Approach 2: Try InfoCouncil pattern
         print("  Trying Stonnington InfoCouncil patterns...")
         
-        # InfoCouncil uses format: ORD_DDMMYYYY_AGN_AT.PDF for agenda
-        # and ORD_DDMMYYYY_MIN.PDF for minutes
+        # InfoCouncil commonly uses prefixes like OCM/CM/SCM and suffixes AGN/MIN
+        # e.g., OCM_DDMMYYYY_AGN.PDF, CM_DDMMYYYY_MIN.PDF, ORD_DDMMYYYY_AGN_AT.PDF
         
         for weeks_back in range(16):
             check_date = current_date - timedelta(weeks=weeks_back)
@@ -271,13 +285,22 @@ class StonningtonFixedScraper(BaseM9Scraper):
             date_str = tuesday.strftime("%Y-%m-%d")
             month_year = tuesday.strftime("%Y/%m")
             
-            # Try both direct and redirect URLs
-            patterns = [
-                (f"{self.infocouncil_base}/Open/{month_year}/ORD_{date_code}_AGN_AT.PDF", 'agenda'),
-                (f"{self.infocouncil_base}/Open/{month_year}/ORD_{date_code}_MIN.PDF", 'minutes'),
-                (f"{self.infocouncil_base}/RedirectToDoc.aspx?URL=Open/{month_year}/ORD_{date_code}_AGN_AT.PDF", 'agenda'),
-                (f"{self.infocouncil_base}/RedirectToDoc.aspx?URL=Open/{month_year}/ORD_{date_code}_MIN.PDF", 'minutes'),
-            ]
+            # Try both direct and redirect URLs with multiple codes
+            prefixes = ["ORD", "OCM", "CM", "SCM"]
+            agn_suffixes = ["AGN_AT.PDF", "AGN.PDF", "AGN_1.PDF"]
+            min_suffixes = ["MIN.PDF", "MIN_1.PDF"]
+            patterns = []
+            for p in prefixes:
+                for suf in agn_suffixes:
+                    patterns.append((f"{self.infocouncil_base}/Open/{month_year}/{p}_{date_code}_{suf}", 'agenda'))
+                for suf in min_suffixes:
+                    patterns.append((f"{self.infocouncil_base}/Open/{month_year}/{p}_{date_code}_{suf}", 'minutes'))
+            # Also try redirector links
+            for p in prefixes:
+                for suf in agn_suffixes:
+                    patterns.append((f"{self.infocouncil_base}/RedirectToDoc.aspx?URL=Open/{month_year}/{p}_{date_code}_{suf}", 'agenda'))
+                for suf in min_suffixes:
+                    patterns.append((f"{self.infocouncil_base}/RedirectToDoc.aspx?URL=Open/{month_year}/{p}_{date_code}_{suf}", 'minutes'))
             
             for url, doc_type in patterns:
                 if self.probe_url(url):
@@ -285,8 +308,8 @@ class StonningtonFixedScraper(BaseM9Scraper):
                         council_id=self.council_id,
                         council_name=self.council_name,
                         document_type=doc_type,
-                        meeting_type='ordinary',
-                        title=f"Ordinary Council Meeting {doc_type.title()} - {date_str}",
+                        meeting_type='council',
+                        title=f"Council Meeting {doc_type.title()} - {date_str}",
                         date=date_str,
                         url=url,
                         webpage_url=self.infocouncil_base

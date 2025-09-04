@@ -10,6 +10,7 @@ from dateutil.parser import parse as parse_date
 from dataclasses import dataclass
 from typing import Optional, List
 import requests
+import cloudscraper
 
 
 @dataclass
@@ -35,15 +36,26 @@ class DarebinScraper:
         # Using the specific 2025 page that has direct PDFs
         self.meetings_url = "https://www.darebin.vic.gov.au/About-council/Council-structure-and-performance/Council-and-Committee-Meetings/Council-meetings/Meeting-agendas-and-minutes/2025-Council-meeting-agendas-and-minutes"
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-AU,en;q=0.9',
         }
+        try:
+            self.session = cloudscraper.create_scraper()
+            self.session.headers.update(self.headers)
+        except Exception:
+            self.session = requests.Session()
+            self.session.headers.update(self.headers)
     
     def fetch_page(self, url: str) -> str:
-        """Fetch a page with requests"""
+        """Fetch a page using a session to handle 403s and redirects"""
         try:
-            response = requests.get(url, headers=self.headers, timeout=30)
-            response.raise_for_status()
-            return response.text
+            # Include referer to simulate navigation from site
+            headers = dict(self.headers)
+            headers['Referer'] = self.base_url
+            resp = self.session.get(url, headers=headers, timeout=30)
+            resp.raise_for_status()
+            return resp.text
         except Exception as e:
             print(f"Error fetching {url}: {e}")
             return ""
