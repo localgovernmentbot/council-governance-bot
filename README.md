@@ -1,61 +1,27 @@
-# M9 Council Transparency Bot
+# CouncilBot (Minimal)
 
-An automated transparency service for the nine inner Melbourne councils (M9), posting meeting agendas and minutes to enhance civic engagement.
+Minimal code and workflow to:
 
-## Mission
+- scrape council meeting agendas/minutes from supported councils
+- select the next fresh document to post
+- publish to BlueSky with a plain clickable URL and three concise hashtags
 
-To serve the public interest by making M9 council decisions more accessible and transparent, in accordance with the Victorian Local Government Act 2020.
+Quick start
 
-## M9 Councils
+1) Add repo secrets `BLUESKY_HANDLE` and `BLUESKY_PASSWORD`.
+2) The GitHub Actions workflow runs hourly at :05 and posts one item when available.
 
-The M9 alliance represents:
-- City of Melbourne
-- Darebin City Council  
-- Hobsons Bay City Council
-- Maribyrnong City Council
-- Merri-bek City Council
-- Moonee Valley City Council
-- Port Phillip City Council
-- Stonnington City Council
-- Yarra City Council
+Key entry points
 
-## Features
+- `m9_unified_scraper.py` – gathers documents and writes `m9_scraper_results.json`.
+- `scripts/run_scheduler.py --live` – picks one fresh document and posts to BlueSky.
 
-- Automated scraping of council meeting documents
-- AI-powered summarization of significant agenda items
-- BlueSky posting with relevant hashtags
-- Open data publishing under Creative Commons
-- Respectful, non-partisan coverage
+Posting rules
 
-## Document Types
+- Deduplication uses a canonicalized URL so redirect/direct links are treated the same.
+- Dates are rendered as “Tuesday, 2 September 2025”.
+- Up to 3 hashtags: `#VicCouncils`, council/location (e.g. `#PortPhillip`), and a topical tag or `#OpenGovAU`.
 
-Following the Local Government Act 2020, we monitor:
-- Council Meeting Agendas and Minutes
-- Delegated Committee Agendas and Minutes
-- Special Meeting documentation
+License
 
-## Significance Criteria
-
-Items are highlighted when they involve:
-- Budget impact > $50,000
-- Affecting > 100 residents
-- Public space changes
-- Policy modifications
-- Environmental impact
-
-## Attribution
-
-This project builds upon the work of YIMBY Melbourne's council-meeting-agenda-scraper project. See [ATTRIBUTION.md](docs/ATTRIBUTION.md) for details.
-
-## Contributing
-
-We welcome contributions that enhance government transparency. See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
-
-## License
-
-- Code: MIT License
-- Data: Creative Commons BY 4.0
-
-## Contact
-
-For issues or suggestions, please use GitHub Issues. This is an independent community project not affiliated with any government body.
+MIT. No third‑party endorsements are implied.
