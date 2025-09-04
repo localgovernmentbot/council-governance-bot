@@ -1,9 +1,6 @@
 """
 BlueSky Integration Module for Council Scrapers
-This module can be integrated with existing council scraper projects
-to post meeting documents to BlueSky for transparency.
-
-Compatible with YIMBY Melbourne's council-meeting-agenda-scraper
+This module posts meeting documents to BlueSky for transparency.
 """
 
 import os
@@ -287,7 +284,7 @@ class BlueSkyPoster:
     
     def post_from_scraper_return(self, scraper_return, council_name, council_hashtag=None):
         """
-        Post from a YIMBY-style ScraperReturn object
+        Post from a generic ScraperReturn-like object
         
         Args:
             scraper_return: ScraperReturn object with name, date, download_url
@@ -307,8 +304,8 @@ class BlueSkyPoster:
         )
 
 
-# Example integration with YIMBY scrapers
-def integrate_with_yimby_scraper(scraper_class, council_name, council_hashtag=None):
+# Example integration decorator for external scrapers
+def integrate_with_scraper(scraper_class, council_name, council_hashtag=None):
     """
     Decorator to add BlueSky posting to existing scrapers
     

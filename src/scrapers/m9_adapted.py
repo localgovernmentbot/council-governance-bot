@@ -1,6 +1,6 @@
 """
-M9 Council Scrapers - Adapted from YIMBY Melbourne
-Comprehensive scrapers that find all documents, not just the latest
+M9 Council Scrapers
+Comprehensive scrapers that find documents across supported councils
 """
 
 from bs4 import BeautifulSoup
@@ -118,7 +118,7 @@ class BaseM9Scraper:
 
 
 class MaribyrnongScraper(BaseM9Scraper):
-    """Maribyrnong scraper adapted from YIMBY"""
+    """Maribyrnong scraper"""
     
     def __init__(self):
         super().__init__(
@@ -226,7 +226,7 @@ class MaribyrnongScraper(BaseM9Scraper):
 
 
 class MerribekScraper(BaseM9Scraper):
-    """Merri-bek scraper adapted from YIMBY"""
+    """Merri-bek scraper"""
     
     def __init__(self):
         super().__init__(
