@@ -11,6 +11,8 @@ from datetime import datetime
 from atproto import Client, models
 import hashlib
 import json
+from src.utils.url_canonicalize import canonicalize_doc_url
+from src.utils.date_format import format_long_date
 
 
 class BlueSkyPoster:
@@ -55,7 +57,9 @@ class BlueSkyPoster:
     
     def _create_doc_hash(self, council_name, doc_title, doc_url):
         """Create unique hash for a document"""
-        content = f"{council_name}|{doc_title}|{doc_url}"
+        # Canonicalize URL so redirects and direct links collide
+        canon = canonicalize_doc_url(doc_url)
+        content = f"{council_name}|{doc_title}|{canon}"
         return hashlib.md5(content.encode()).hexdigest()
     
     def post_document(self, council_name, doc_type, doc_title, doc_url, 
@@ -74,13 +78,15 @@ class BlueSkyPoster:
         Returns:
             bool: True if posted successfully, False otherwise
         """
-        # Check if already posted
-        doc_hash = self._create_doc_hash(council_name, doc_title, doc_url)
-        if doc_hash in self.posted_docs:
+        # Check if already posted (support legacy hashes on raw URL too)
+        canon_hash = self._create_doc_hash(council_name, doc_title, doc_url)
+        raw_hash = hashlib.md5(f"{council_name}|{doc_title}|{doc_url}".encode()).hexdigest()
+        if canon_hash in self.posted_docs or raw_hash in self.posted_docs:
             return False
         
         # Create post text (no emojis, plain clickable URL)
-        date_info = f" ({date_str})" if date_str else ""
+        pretty_date = format_long_date(date_str) if date_str else None
+        date_info = f" ({pretty_date})" if pretty_date else ""
         hashtag = f"#{council_hashtag}" if council_hashtag else ""
         header = f"{council_name} - new {doc_type}{date_info}:"
         footer = f"{doc_url}\n\n#VicCouncils {hashtag} #OpenGov".strip()
@@ -101,10 +107,12 @@ class BlueSkyPoster:
             resp = client.send_post(text=post_text)
 
             # Mark as posted and index the root post
-            self.posted_docs.add(doc_hash)
+            # Save both canonical and raw hashes for backward compatibility
+            self.posted_docs.add(canon_hash)
+            self.posted_docs.add(raw_hash)
             if not hasattr(self, '_post_index'):
                 self._post_index = {}
-            self._post_index[doc_hash] = {'uri': resp.uri, 'cid': resp.cid}
+            self._post_index[canon_hash] = {'uri': resp.uri, 'cid': resp.cid}
             self._save_posted_docs()
 
             print(f"✅ Posted: {doc_title}")

@@ -25,6 +25,7 @@ from src.processors.summarize import (
     refine_toc_lines,
 )
 from src.bluesky_integration import BlueSkyPoster
+from src.utils.url_canonicalize import canonicalize_doc_url
 
 
 FRESH_MINUTES_LAST_DAYS = int(os.environ.get('FRESH_MINUTES_LAST_DAYS', '7'))
@@ -82,9 +83,11 @@ class Scheduler:
         return set()
 
     @staticmethod
-    def _doc_hash(council_name: str, title: str, url: str) -> str:
-        content = f"{council_name}|{title}|{url}"
-        return hashlib.md5(content.encode()).hexdigest()
+    def _doc_hashes(council_name: str, title: str, url: str):
+        """Return both raw and canonicalized hashes for backward compatibility."""
+        raw = hashlib.md5(f"{council_name}|{title}|{url}".encode()).hexdigest()
+        canon = hashlib.md5(f"{council_name}|{title}|{canonicalize_doc_url(url)}".encode()).hexdigest()
+        return raw, canon
 
     def _is_fresh(self, doc: Dict) -> bool:
         try:
@@ -105,8 +108,8 @@ class Scheduler:
             # Baseline policy: post all agendas/minutes; prioritize fresh first
             if not self._is_fresh(d):
                 continue
-            h = self._doc_hash(d['council_name'], d['title'], d['url'])
-            if h in self.already_posted:
+            raw_h, canon_h = self._doc_hashes(d['council_name'], d['title'], d['url'])
+            if raw_h in self.already_posted or canon_h in self.already_posted:
                 continue
             candidates.append(QueueItem(
                 council_name=d['council_name'],

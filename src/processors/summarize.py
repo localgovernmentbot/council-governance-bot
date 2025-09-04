@@ -8,6 +8,7 @@ without hashtag spam.
 
 import re
 from typing import List, Tuple, Dict, Optional, Tuple
+from src.utils.date_format import format_long_date
 
 
 COUNCIL_TAGS = {
@@ -292,7 +293,8 @@ def compose_post_text(council_name: str, doc_type: str, title: str, date_str: st
 
     # Base template
     label = _meeting_label(meeting_type)
-    header = f"{council_name} {label} {doc_type.title()} — {date_str}"
+    pretty_date = format_long_date(date_str) if date_str else ""
+    header = f"{council_name} {label} {doc_type.title()} — {pretty_date}".rstrip(" —")
     footer = f"{url}\n\n{' '.join(hashtags)}"
 
     # Fit within 300 chars total
