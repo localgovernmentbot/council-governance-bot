@@ -79,20 +79,20 @@ class BlueSkyPoster:
         if doc_hash in self.posted_docs:
             return False
         
-        # Create post text
-        emoji = "📋" if doc_type == 'agenda' else "📝"
+        # Create post text (no emojis, plain clickable URL)
         date_info = f" ({date_str})" if date_str else ""
-        
         hashtag = f"#{council_hashtag}" if council_hashtag else ""
-        
-        post_text = f"{emoji} {council_name} - new {doc_type}{date_info}:\n\n{doc_title}\n\n🔗 {doc_url}\n\n#VicCouncils {hashtag} #OpenGov"
+        header = f"{council_name} - new {doc_type}{date_info}:"
+        footer = f"{doc_url}\n\n#VicCouncils {hashtag} #OpenGov".strip()
+        post_text = f"{header}\n\n{doc_title}\n\n{footer}"
         
         # Trim if too long (300 char limit)
         if len(post_text) > 300:
-            available = 300 - len(f"{emoji} {council_name} - new {doc_type}{date_info}:\n\n...\n\n🔗 {doc_url}\n\n#VicCouncils {hashtag} #OpenGov")
+            reserved = len(f"{header}\n\n...\n\n{footer}")
+            available = 300 - reserved
             if available > 20:
                 doc_title = doc_title[:available] + "..."
-                post_text = f"{emoji} {council_name} - new {doc_type}{date_info}:\n\n{doc_title}\n\n🔗 {doc_url}\n\n#VicCouncils {hashtag} #OpenGov"
+                post_text = f"{header}\n\n{doc_title}\n\n{footer}"
         
         # Post to BlueSky
         try:

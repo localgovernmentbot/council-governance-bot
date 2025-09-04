@@ -288,13 +288,12 @@ def compose_post_text(council_name: str, doc_type: str, title: str, date_str: st
 
     Includes meeting type per LGA categories (Ordinary Council, Delegated Committee, Special).
     """
-    emoji = '📋' if doc_type == 'agenda' else '📝'
     hashtags = choose_hashtags(council_name, topics)
 
     # Base template
     label = _meeting_label(meeting_type)
-    header = f"{emoji} {council_name} {label} {doc_type.title()} — {date_str}"
-    footer = f"🔗 {url}\n\n{' '.join(hashtags)}"
+    header = f"{council_name} {label} {doc_type.title()} — {date_str}"
+    footer = f"{url}\n\n{' '.join(hashtags)}"
 
     # Fit within 300 chars total
     budget = 300 - (len(header) + 2 + len('\n\n') + len(footer))
