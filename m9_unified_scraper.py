@@ -16,6 +16,8 @@ from moonee_valley_fixed import MooneeValleyFixedScraper
 from yarra_stonnington_fixed import YarraFixedScraper, StonningtonFixedScraper
 from m9_final_three_complete import PortPhillipFinalScraper
 from infocouncil_generic import InfoCouncilScraper, InfoCouncilConfig
+from generic_direct import DirectPageScraper, DirectPageConfig
+from generic_json import JsonListScraper, JsonListConfig
 
 import json
 
@@ -82,15 +84,33 @@ if registry_path.exists():
     except Exception:
         reg = []
     for row in reg:
-        if (row.get('type') or '').lower() != 'infocouncil':
-            continue
+        typ = (row.get('type') or '').lower()
         council_id = row.get('id') or 'UNK'
         name = row.get('name') or council_id
-        base = row.get('base') or ''
         print(f"\n{name} (registry):")
         try:
-            cfg = InfoCouncilConfig(council_id=council_id, council_name=name, base_url=base, months_back=6)
-            docs = InfoCouncilScraper(cfg).scrape()
+            if typ == 'infocouncil':
+                base = row.get('base') or ''
+                cfg = InfoCouncilConfig(council_id=council_id, council_name=name, base_url=base, months_back=6)
+                docs = InfoCouncilScraper(cfg).scrape()
+            elif typ == 'direct_page':
+                cfg = DirectPageConfig(council_id=council_id, council_name=name, page_url=row['page_url'], base_url=row.get('base'))
+                docs = DirectPageScraper(cfg).scrape()
+            elif typ == 'json_list':
+                cfg = JsonListConfig(
+                    council_id=council_id,
+                    council_name=name,
+                    endpoint=row['endpoint'],
+                    item_path=row.get('item_path', []),
+                    title_field=row['title_field'],
+                    url_field=row['url_field'],
+                    date_field=row['date_field'],
+                )
+                docs = JsonListScraper(cfg).scrape()
+            else:
+                print("  Skipped: unknown type")
+                docs = []
+
             agendas = [d for d in docs if d.document_type == 'agenda']
             minutes = [d for d in docs if d.document_type == 'minutes']
             print(f"  Total: {len(docs)} documents ({len(agendas)} agendas, {len(minutes)} minutes)")

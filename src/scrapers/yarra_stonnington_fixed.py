@@ -280,7 +280,6 @@ class StonningtonFixedScraper(BaseM9Scraper):
             try:
                 from src.utils.infocouncil import discover_month_files, parse_infocouncil_filename
                 for i in range(0, 6):
-                    from datetime import timedelta
                     dt = current_date - timedelta(days=30*i)
                     files = discover_month_files(self.infocouncil_base, dt.year, dt.month, self.session, self.headers)
                     for u in files:
