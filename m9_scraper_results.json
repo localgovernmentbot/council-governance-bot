@@ -1,5 +1,5 @@
 {
-  "scrape_date": "2025-09-05T05:16:16.607770",
+  "scrape_date": "2025-09-05T07:36:18.853169",
   "total_councils": 9,
   "working_councils": 4,
   "total_documents": 269,
@@ -195,6 +195,125 @@
     },
     {
       "name": "Yarra Ranges Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "City of Ballarat",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "City of Greater Bendigo",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "City of Greater Geelong",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Surf Coast Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Mornington Peninsula Shire",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Cardinia Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Melton City Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Moorabool Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Colac Otway Shire",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Campaspe Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Central Goldfields Shire",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Greater Shepparton City Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Mildura Rural City Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Moira Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Swan Hill Rural City Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Loddon Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Mitchell Shire Council",
       "total": 0,
       "agendas": 0,
       "minutes": 0,
