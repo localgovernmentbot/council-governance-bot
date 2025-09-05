@@ -59,6 +59,37 @@ class InfoCouncilScraper:
                     url=u,
                     webpage_url=self.cfg.base_url
                 ))
+        # If nothing discovered, probe typical filenames around recent meeting days
+        if not out:
+            prefixes = ["ORD", "OCM", "CM"]
+            agn_suffixes = ["AGN_AT.PDF", "AGN.PDF"]
+            min_suffixes = ["MIN.PDF"]
+            for weeks_back in range(0, 16):  # ~4 months of weeks
+                d = now - timedelta(weeks=weeks_back)
+                for offset_weekday in (1, 2, 0):  # Tue, Wed, Mon
+                    target = d - timedelta(days=(d.weekday() - offset_weekday) % 7)
+                    code = target.strftime("%d%m%Y")
+                    y_m = target.strftime("%Y/%m")
+                    iso = target.strftime("%Y-%m-%d")
+                    for p in prefixes:
+                        for s in agn_suffixes + min_suffixes:
+                            url = f"{self.cfg.base_url}/Open/{y_m}/{p}_{code}_{s}"
+                            try:
+                                r = self.session.get(url, headers={**self.headers, 'Range': 'bytes=0-0'}, timeout=8, allow_redirects=True)
+                                if r.status_code in (200, 206) and 'pdf' in r.headers.get('Content-Type', '').lower():
+                                    kind = 'agenda' if 'AGN' in s else 'minutes'
+                                    out.append(MeetingDocument(
+                                        council_id=self.cfg.council_id,
+                                        council_name=self.cfg.council_name,
+                                        document_type=kind,
+                                        meeting_type='council',
+                                        title=f"Council Meeting {kind.title()} - {iso}",
+                                        date=iso,
+                                        url=url,
+                                        webpage_url=self.cfg.base_url
+                                    ))
+                            except Exception:
+                                continue
         # Dedupe and sort
         seen = set(); uniq: List[MeetingDocument] = []
         for d in out:
