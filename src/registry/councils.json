@@ -34,5 +34,7 @@
   {"id": "MOIR", "name": "Moira Shire Council", "type": "infocouncil", "base": "https://moira.infocouncil.biz"},
   {"id": "SWAN", "name": "Swan Hill Rural City Council", "type": "infocouncil", "base": "https://swanhill.infocouncil.biz"},
   {"id": "LODD", "name": "Loddon Shire Council", "type": "infocouncil", "base": "https://loddon.infocouncil.biz"},
-  {"id": "MITC", "name": "Mitchell Shire Council", "type": "infocouncil", "base": "https://mitchell.infocouncil.biz"}
+  {"id": "MITC", "name": "Mitchell Shire Council", "type": "infocouncil", "base": "https://mitchell.infocouncil.biz"},
+  {"id": "MELB-DP", "name": "City of Melbourne", "type": "direct_page", "page_url": "https://www.melbourne.vic.gov.au/about-council/committees-meetings/meeting-archive/pages/meeting-archive.aspx", "base": "https://www.melbourne.vic.gov.au", "link_selector": "a[href$='.pdf']"},
+  {"id": "HOBS-DP", "name": "Hobsons Bay City Council", "type": "direct_page", "page_url": "https://www.hobsonsbay.vic.gov.au/Council/Council-meetings", "base": "https://www.hobsonsbay.vic.gov.au", "link_selector": "a[href$='.pdf']"}
 ]
