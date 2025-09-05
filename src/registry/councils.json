@@ -17,5 +17,22 @@
   {"id": "WHIT", "name": "Whittlesea City Council", "type": "infocouncil", "base": "https://whittlesea.infocouncil.biz"},
   {"id": "WYNH", "name": "Wyndham City Council", "type": "infocouncil", "base": "https://wyndham.infocouncil.biz"},
   {"id": "WHIT2", "name": "Whitehorse City Council", "type": "infocouncil", "base": "https://whitehorse.infocouncil.biz"},
-  {"id": "YARRR", "name": "Yarra Ranges Council", "type": "infocouncil", "base": "https://yarraranges.infocouncil.biz"}
+  {"id": "YARRR", "name": "Yarra Ranges Council", "type": "infocouncil", "base": "https://yarraranges.infocouncil.biz"},
+  {"id": "BALL", "name": "City of Ballarat", "type": "infocouncil", "base": "https://ballarat.infocouncil.biz"},
+  {"id": "BEND", "name": "City of Greater Bendigo", "type": "infocouncil", "base": "https://greaterbendigo.infocouncil.biz"},
+  {"id": "GEEL", "name": "City of Greater Geelong", "type": "infocouncil", "base": "https://greatergeelong.infocouncil.biz"},
+  {"id": "SURF", "name": "Surf Coast Shire Council", "type": "infocouncil", "base": "https://surfcoast.infocouncil.biz"},
+  {"id": "MORN", "name": "Mornington Peninsula Shire", "type": "infocouncil", "base": "https://mornpen.infocouncil.biz"},
+  {"id": "CARD", "name": "Cardinia Shire Council", "type": "infocouncil", "base": "https://cardinia.infocouncil.biz"},
+  {"id": "MELT", "name": "Melton City Council", "type": "infocouncil", "base": "https://meltoncity.infocouncil.biz"},
+  {"id": "MOOR", "name": "Moorabool Shire Council", "type": "infocouncil", "base": "https://moorabool.infocouncil.biz"},
+  {"id": "COLA", "name": "Colac Otway Shire", "type": "infocouncil", "base": "https://colacotway.infocouncil.biz"},
+  {"id": "CAMP", "name": "Campaspe Shire Council", "type": "infocouncil", "base": "https://campaspe.infocouncil.biz"},
+  {"id": "CGFD", "name": "Central Goldfields Shire", "type": "infocouncil", "base": "https://centralgoldfields.infocouncil.biz"},
+  {"id": "GSHE", "name": "Greater Shepparton City Council", "type": "infocouncil", "base": "https://greatershepparton.infocouncil.biz"},
+  {"id": "MILD", "name": "Mildura Rural City Council", "type": "infocouncil", "base": "https://mildura.infocouncil.biz"},
+  {"id": "MOIR", "name": "Moira Shire Council", "type": "infocouncil", "base": "https://moira.infocouncil.biz"},
+  {"id": "SWAN", "name": "Swan Hill Rural City Council", "type": "infocouncil", "base": "https://swanhill.infocouncil.biz"},
+  {"id": "LODD", "name": "Loddon Shire Council", "type": "infocouncil", "base": "https://loddon.infocouncil.biz"},
+  {"id": "MITC", "name": "Mitchell Shire Council", "type": "infocouncil", "base": "https://mitchell.infocouncil.biz"}
 ]
