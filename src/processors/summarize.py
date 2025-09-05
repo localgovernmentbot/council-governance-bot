@@ -103,6 +103,23 @@ def choose_hashtags(council_name: str, topics: List[str]) -> List[str]:
     tags: List[str] = ['#VicCouncils']
     # Council/location
     council_tag = COUNCIL_TAGS.get(council_name) or COUNCIL_TAGS.get(council_name.split(' (')[0], '')
+    if not council_tag:
+        # Fallback: derive a tag from the council name (e.g., "City of Ballarat" -> #Ballarat)
+        import re
+        # Prefer last word token of the name that is alphabetic and > 3 chars
+        tokens = [t for t in re.split(r"[^A-Za-z]+", council_name) if t]
+        fallback = None
+        if tokens:
+            # Use the last non-generic token if possible
+            generics = {"city", "council", "shire", "rural", "cityof", "of", "cityofmelbourne"}
+            for t in reversed(tokens):
+                low = t.lower()
+                if low not in generics and len(t) >= 4:
+                    fallback = t
+                    break
+            if not fallback:
+                fallback = tokens[-1]
+        council_tag = f"#{fallback}" if fallback else ""
     if council_tag:
         tags.append(council_tag)
 

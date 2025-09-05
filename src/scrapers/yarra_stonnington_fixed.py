@@ -33,12 +33,16 @@ class YarraFixedScraper(BaseM9Scraper):
         """Scrape Yarra using multiple approaches"""
         results = []
         
-        # Approach 1: Scrape the council meetings page
-        meetings_url = "https://www.yarracity.vic.gov.au/about-us/council-meetings"
-        
-        try:
-            response = requests.get(meetings_url, headers=self.headers, timeout=30)
-            if response.status_code == 200:
+        # Approach 1: Scrape multiple meetings pages
+        for meetings_url in [
+            "https://www.yarracity.vic.gov.au/about-us/council-meetings",
+            "https://www.yarracity.vic.gov.au/about-us/council-and-committee-meetings",
+            "https://www.yarracity.vic.gov.au/about-us/council-and-committee-meetings/upcoming-council-and-committee-meetings",
+        ]:
+            try:
+                response = requests.get(meetings_url, headers=self.headers, timeout=30)
+                if response.status_code != 200:
+                    continue
                 soup = BeautifulSoup(response.text, 'html.parser')
                 
                 # Find all links that might be PDFs
@@ -83,8 +87,8 @@ class YarraFixedScraper(BaseM9Scraper):
                                     webpage_url=meetings_url
                                 )
                                 results.append(doc)
-        except Exception as e:
-            pass  # Silently continue
+            except Exception:
+                continue
         
         # Approach 2: Try known URL patterns for recent months
         current_date = datetime.now()

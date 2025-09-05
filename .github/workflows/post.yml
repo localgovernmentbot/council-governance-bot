@@ -41,6 +41,9 @@ jobs:
           PER_COUNCIL_COOLDOWN_HOURS: '6'
           POST_SUMMARY: '0'
           FAST_PREVIEW: '1'
+          # Relax freshness windows temporarily to increase coverage
+          FRESH_MINUTES_LAST_DAYS: '14'
+          FRESH_AGENDAS_LAST_DAYS: '21'
         run: |
           python scripts/run_scheduler.py --live
 
