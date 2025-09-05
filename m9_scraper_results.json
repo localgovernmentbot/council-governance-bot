@@ -1,5 +1,5 @@
 {
-  "scrape_date": "2025-09-05T07:36:18.853169",
+  "scrape_date": "2025-09-05T19:29:41.825283",
   "total_councils": 9,
   "working_councils": 4,
   "total_documents": 269,
@@ -314,6 +314,20 @@
     },
     {
       "name": "Mitchell Shire Council",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "City of Melbourne",
+      "total": 0,
+      "agendas": 0,
+      "minutes": 0,
+      "working": false
+    },
+    {
+      "name": "Hobsons Bay City Council",
       "total": 0,
       "agendas": 0,
       "minutes": 0,
