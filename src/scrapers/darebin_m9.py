@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from typing import Optional, List
 import requests
 import cloudscraper
+from src.utils.infocouncil import discover_month_files, parse_infocouncil_filename
 
 
 @dataclass
@@ -107,13 +108,97 @@ class DarebinScraper:
         else:
             return None
     
+    def _probe_infocouncil(self) -> List[MeetingDocument]:
+        """Fallback: probe InfoCouncil-style URLs if the main site blocks us.
+
+        Attempts Tuesday and Monday for recent weeks and checks for
+        ORD/OCM prefixes with AGN/MIN suffixes.
+        """
+        base = "https://darebin.infocouncil.biz"
+        out: List[MeetingDocument] = []
+        today = datetime.now()
+        from datetime import timedelta
+        for weeks_back in range(0, 26):  # ~6 months
+            d = today - timedelta(weeks=weeks_back)
+            # Try likely meeting days: Tue, Mon, Wed, Thu
+            for offset in (1, 0, 2, 3):
+                target = d - timedelta(days=(d.weekday() - offset) % 7)
+                date_code = target.strftime("%d%m%Y")
+                month_year = target.strftime("%Y/%m")
+                formatted = target.strftime('%Y-%m-%d')
+                prefixes = ["ORD", "OCM", "CM"]
+                files = [(f"{p}_{date_code}_AGN_AT.PDF", 'agenda') for p in prefixes] + \
+                        [(f"{p}_{date_code}_AGN.PDF", 'agenda') for p in prefixes] + \
+                        [(f"{p}_{date_code}_MIN.PDF", 'minutes') for p in prefixes]
+                for fname, kind in files:
+                    direct = f"{base}/Open/{month_year}/{fname}"
+                    redir = f"{base}/RedirectToDoc.aspx?URL=Open/{month_year}/{fname}"
+                    try:
+                        r = self.session.get(direct, headers={'Range': 'bytes=0-0', **self.headers}, timeout=8, allow_redirects=True)
+                        if r.status_code in (200, 206) and 'pdf' in r.headers.get('Content-Type', '').lower():
+                            out.append(MeetingDocument(
+                                council_id=self.council_id,
+                                council_name=self.council_name,
+                                document_type=kind,
+                                meeting_type='council',
+                                title=f"Council Meeting {kind.title()} - {formatted}",
+                                date=formatted,
+                                url=direct,
+                                webpage_url=base,
+                            ))
+                            continue
+                        # Try redirector
+                        r2 = self.session.get(redir, headers={'Range': 'bytes=0-0', **self.headers}, timeout=8, allow_redirects=True)
+                        if r2.status_code in (200, 206) and 'pdf' in r2.headers.get('Content-Type', '').lower():
+                            out.append(MeetingDocument(
+                                council_id=self.council_id,
+                                council_name=self.council_name,
+                                document_type=kind,
+                                meeting_type='council',
+                                title=f"Council Meeting {kind.title()} - {formatted}",
+                                date=formatted,
+                                url=redir,
+                                webpage_url=base,
+                            ))
+                    except Exception:
+                        pass
+        # Try month discovery if nothing found yet (last 6 months)
+        if not out:
+            from datetime import timedelta
+            for i in range(0, 6):
+                dt = datetime.now() - timedelta(days=30*i)
+                files = discover_month_files(base, dt.year, dt.month, self.session, self.headers)
+                for u in files:
+                    kind, iso = parse_infocouncil_filename(u)
+                    if not kind or not iso:
+                        continue
+                    out.append(MeetingDocument(
+                        council_id=self.council_id,
+                        council_name=self.council_name,
+                        document_type=kind,
+                        meeting_type='council',
+                        title=f"Council Meeting {kind.title()} - {iso}",
+                        date=iso,
+                        url=u,
+                        webpage_url=base,
+                    ))
+
+        # Dedupe
+        seen = set(); uniq = []
+        for d in out:
+            if d.url not in seen:
+                seen.add(d.url); uniq.append(d)
+        uniq.sort(key=lambda x: x.date, reverse=True)
+        return uniq
+
     def scrape(self):
         """Scrape Darebin council meetings"""
-        results = []
+        results: List[MeetingDocument] = []
         
         html = self.fetch_page(self.meetings_url)
         if not html:
-            return results
+            # Fallback
+            return self._probe_infocouncil()
         
         soup = BeautifulSoup(html, 'html.parser')
         
@@ -159,4 +244,5 @@ class DarebinScraper:
         # Sort by date (newest first)
         results.sort(key=lambda x: x.date, reverse=True)
         
-        return results
+        # If blocked or empty, try InfoCouncil fallback
+        return results or self._probe_infocouncil()

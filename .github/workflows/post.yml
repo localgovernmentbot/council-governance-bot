@@ -5,6 +5,10 @@ on:
     - cron: '5 * * * *'  # every hour at :05
   workflow_dispatch: {}
 
+concurrency:
+  group: councilbot-post
+  cancel-in-progress: false
+
 permissions:
   contents: write  # allow committing posted state back to repo
 
@@ -47,6 +51,8 @@ jobs:
           # Force-add JSON outputs even if gitignored
           git add -f posted_bluesky.json m9_scraper_results.json || true
           git commit -m "Update posted state [skip ci]" || echo "No changes"
+          # Avoid push races with prior runs
+          git pull --rebase --autostash origin main || true
           git push
 
       - name: Upload results artifacts

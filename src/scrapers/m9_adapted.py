@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from typing import Optional, List
 import requests
 import cloudscraper
+from src.utils.infocouncil import discover_month_files, parse_infocouncil_filename
 
 
 @dataclass
@@ -127,6 +128,55 @@ class MaribyrnongScraper(BaseM9Scraper):
             base_url="https://www.maribyrnong.vic.gov.au"
         )
     
+    def _probe_infocouncil(self) -> List[MeetingDocument]:
+        base = "https://maribyrnong.infocouncil.biz"
+        out: List[MeetingDocument] = []
+        from datetime import timedelta
+        today = datetime.now()
+        for weeks_back in range(0, 26):
+            d = today - timedelta(weeks=weeks_back)
+            # Try Tue, Wed, Mon
+            for offset in (1, 2, 0):
+                target = d - timedelta(days=(d.weekday() - offset) % 7)
+                code = target.strftime("%d%m%Y")
+                y_m = target.strftime("%Y/%m")
+                date_str = target.strftime('%Y-%m-%d')
+                prefixes = ["ORD", "OCM", "CM"]
+                agn = ["AGN_AT.PDF", "AGN.PDF"]
+                mins = ["MIN.PDF"]
+                for p in prefixes:
+                    for s in agn:
+                        direct = f"{base}/Open/{y_m}/{p}_{code}_{s}"
+                        redir = f"{base}/RedirectToDoc.aspx?URL=Open/{y_m}/{p}_{code}_{s}"
+                        if self.probe_url(direct) or self.probe_url(redir):
+                            url = direct if self.probe_url(direct) else redir
+                            out.append(MeetingDocument(self.council_id, self.council_name, 'agenda', 'council', f"Council Meeting Agenda - {date_str}", date_str, url, base))
+                    for s in mins:
+                        direct = f"{base}/Open/{y_m}/{p}_{code}_{s}"
+                        redir = f"{base}/RedirectToDoc.aspx?URL=Open/{y_m}/{p}_{code}_{s}"
+                        if self.probe_url(direct) or self.probe_url(redir):
+                            url = direct if self.probe_url(direct) else redir
+                            out.append(MeetingDocument(self.council_id, self.council_name, 'minutes', 'council', f"Council Meeting Minutes - {date_str}", date_str, url, base))
+        # Month discovery if empty
+        if not out:
+            for i in range(0, 6):
+                from datetime import timedelta
+                dt = today - timedelta(days=30*i)
+                files = discover_month_files(base, dt.year, dt.month, self.session, self.headers)
+                for u in files:
+                    kind, iso = parse_infocouncil_filename(u)
+                    if not kind or not iso:
+                        continue
+                    out.append(MeetingDocument(self.council_id, self.council_name, kind, 'council', f"Council Meeting {kind.title()} - {iso}", iso, u, base))
+
+        # Dedupe/sort
+        seen=set(); uniq=[]
+        for d in out:
+            if d.url not in seen:
+                seen.add(d.url); uniq.append(d)
+        uniq.sort(key=lambda x: x.date, reverse=True)
+        return uniq
+
     def scrape(self):
         """Scrape all Maribyrnong meeting documents"""
         results = []
@@ -136,7 +186,7 @@ class MaribyrnongScraper(BaseM9Scraper):
         html = self.fetch_page(url)
         
         if not html:
-            return results
+            return self._probe_infocouncil()
         
         soup = BeautifulSoup(html, 'html.parser')
         
@@ -222,7 +272,7 @@ class MaribyrnongScraper(BaseM9Scraper):
         # Sort by date (newest first)
         results.sort(key=lambda x: x.date, reverse=True)
         
-        return results
+        return results or self._probe_infocouncil()
 
 
 class MerribekScraper(BaseM9Scraper):

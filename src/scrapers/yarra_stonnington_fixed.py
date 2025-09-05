@@ -234,8 +234,7 @@ class StonningtonFixedScraper(BaseM9Scraper):
                     break  # Found a working pattern for this date
         
         # Approach 2: Try InfoCouncil pattern
-        # InfoCouncil uses format: ORD_DDMMYYYY_AGN_AT.PDF for agenda
-        # and ORD_DDMMYYYY_MIN.PDF for minutes
+        # InfoCouncil uses formats like: ORD_DDMMYYYY_AGN_AT.PDF, OCM_DDMMYYYY_MIN.PDF
         
         for weeks_back in range(16):
             check_date = current_date - timedelta(weeks=weeks_back)
@@ -255,11 +254,12 @@ class StonningtonFixedScraper(BaseM9Scraper):
             date_str = tuesday.strftime("%Y-%m-%d")
             month_year = tuesday.strftime("%Y/%m")
             
-            # Try both direct and redirect URLs
-            patterns = [
-                (f"{self.infocouncil_base}/Open/{month_year}/ORD_{date_code}_AGN_AT.PDF", 'agenda'),
-                (f"{self.infocouncil_base}/Open/{month_year}/ORD_{date_code}_MIN.PDF", 'minutes'),
-            ]
+            # Try both direct and redirect URLs, with multiple prefixes
+            patterns = []
+            for p in ["ORD", "OCM", "CM"]:
+                patterns.append((f"{self.infocouncil_base}/Open/{month_year}/{p}_{date_code}_AGN_AT.PDF", 'agenda'))
+                patterns.append((f"{self.infocouncil_base}/Open/{month_year}/{p}_{date_code}_AGN.PDF", 'agenda'))
+                patterns.append((f"{self.infocouncil_base}/Open/{month_year}/{p}_{date_code}_MIN.PDF", 'minutes'))
             
             for url, doc_type in patterns:
                 if self.probe_url(url):
@@ -267,13 +267,38 @@ class StonningtonFixedScraper(BaseM9Scraper):
                         council_id=self.council_id,
                         council_name=self.council_name,
                         document_type=doc_type,
-                        meeting_type='ordinary',
-                        title=f"Ordinary Council Meeting {doc_type.title()} - {date_str}",
+                        meeting_type='council',
+                        title=f"Council Meeting {doc_type.title()} - {date_str}",
                         date=date_str,
                         url=url,
                         webpage_url=self.infocouncil_base
                     )
                     results.append(doc)
+
+        # Month discovery fallback
+        if not results:
+            try:
+                from src.utils.infocouncil import discover_month_files, parse_infocouncil_filename
+                for i in range(0, 6):
+                    from datetime import timedelta
+                    dt = current_date - timedelta(days=30*i)
+                    files = discover_month_files(self.infocouncil_base, dt.year, dt.month, self.session, self.headers)
+                    for u in files:
+                        kind, iso = parse_infocouncil_filename(u)
+                        if not kind or not iso:
+                            continue
+                        results.append(MeetingDocument(
+                            council_id=self.council_id,
+                            council_name=self.council_name,
+                            document_type=kind,
+                            meeting_type='council',
+                            title=f"Council Meeting {kind.title()} - {iso}",
+                            date=iso,
+                            url=u,
+                            webpage_url=self.infocouncil_base
+                        ))
+            except Exception:
+                pass
         
         # Remove duplicates
         seen_urls = set()
