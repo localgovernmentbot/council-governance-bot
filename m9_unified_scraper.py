@@ -4,6 +4,7 @@ Final unified M9 scraper - runs all 9 councils
 """
 
 import sys
+from pathlib import Path
 sys.path.append('src/scrapers')
 
 # Import working scrapers from existing modules
@@ -14,10 +15,13 @@ from m9_adapted import MaribyrnongScraper, MerribekScraper
 from moonee_valley_fixed import MooneeValleyFixedScraper
 from yarra_stonnington_fixed import YarraFixedScraper, StonningtonFixedScraper
 from m9_final_three_complete import PortPhillipFinalScraper
+from infocouncil_generic import InfoCouncilScraper, InfoCouncilConfig
+
+import json
 
 print("M9 COUNCIL BOT - FINAL UNIFIED SCRAPER (v2)")
 print("=" * 60)
-print("\nRunning all 9 metropolitan Melbourne councils...")
+print("\nRunning M9 councils and additional InfoCouncil councils...")
 print("Using improved scrapers for Yarra and Stonnington\n")
 
 # All 9 M9 councils
@@ -70,10 +74,38 @@ for name, scraper_class in scrapers:
             'working': False
         })
 
+# Registry-driven InfoCouncil councils
+registry_path = Path('src/registry/councils.json')
+if registry_path.exists():
+    try:
+        reg = json.loads(registry_path.read_text())
+    except Exception:
+        reg = []
+    for row in reg:
+        if (row.get('type') or '').lower() != 'infocouncil':
+            continue
+        council_id = row.get('id') or 'UNK'
+        name = row.get('name') or council_id
+        base = row.get('base') or ''
+        print(f"\n{name} (registry):")
+        try:
+            cfg = InfoCouncilConfig(council_id=council_id, council_name=name, base_url=base, months_back=6)
+            docs = InfoCouncilScraper(cfg).scrape()
+            agendas = [d for d in docs if d.document_type == 'agenda']
+            minutes = [d for d in docs if d.document_type == 'minutes']
+            print(f"  Total: {len(docs)} documents ({len(agendas)} agendas, {len(minutes)} minutes)")
+            if docs:
+                print(f"  Most recent: {docs[0].date} - {docs[0].title[:50]}...")
+            all_documents.extend(docs)
+            council_stats.append({'name': name, 'total': len(docs), 'agendas': len(agendas), 'minutes': len(minutes), 'working': len(docs) > 0})
+        except Exception as e:
+            print(f"  Error: {e}")
+            council_stats.append({'name': name, 'total': 0, 'agendas': 0, 'minutes': 0, 'working': False})
+
 # Summary
 print(f"\n{'='*60}")
 print("FINAL SUMMARY:")
-print(f"\nWorking councils: {sum(1 for c in council_stats if c['working'])}/9")
+print(f"\nWorking councils: {sum(1 for c in council_stats if c['working'])}/{len(council_stats)}")
 print(f"Total documents: {len(all_documents)}")
 print(f"Total agendas: {sum(c['agendas'] for c in council_stats)}")
 print(f"Total minutes: {sum(c['minutes'] for c in council_stats)}")

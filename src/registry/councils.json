@@ -1,0 +1,21 @@
+[
+  {"id": "BANY", "name": "Banyule City Council", "type": "infocouncil", "base": "https://banyule.infocouncil.biz"},
+  {"id": "BAYS", "name": "Bayside City Council", "type": "infocouncil", "base": "https://bayside.infocouncil.biz"},
+  {"id": "BORO", "name": "Boroondara City Council", "type": "infocouncil", "base": "https://boroondara.infocouncil.biz"},
+  {"id": "BRIM", "name": "Brimbank City Council", "type": "infocouncil", "base": "https://brimbank.infocouncil.biz"},
+  {"id": "CASE", "name": "City of Casey", "type": "infocouncil", "base": "https://casey.infocouncil.biz"},
+  {"id": "DAND", "name": "Greater Dandenong City Council", "type": "infocouncil", "base": "https://greaterdandenong.infocouncil.biz"},
+  {"id": "FRAN", "name": "Frankston City Council", "type": "infocouncil", "base": "https://frankston.infocouncil.biz"},
+  {"id": "GLEN", "name": "Glen Eira City Council", "type": "infocouncil", "base": "https://gleneira.infocouncil.biz"},
+  {"id": "HUME", "name": "Hume City Council", "type": "infocouncil", "base": "https://hume.infocouncil.biz"},
+  {"id": "KING", "name": "Kingston City Council", "type": "infocouncil", "base": "https://kingston.infocouncil.biz"},
+  {"id": "KNOX", "name": "Knox City Council", "type": "infocouncil", "base": "https://knox.infocouncil.biz"},
+  {"id": "MONA", "name": "Monash City Council", "type": "infocouncil", "base": "https://monash.infocouncil.biz"},
+  {"id": "MANN", "name": "Manningham City Council", "type": "infocouncil", "base": "https://manningham.infocouncil.biz"},
+  {"id": "MARO", "name": "Maroondah City Council", "type": "infocouncil", "base": "https://maroondah.infocouncil.biz"},
+  {"id": "NILL", "name": "Nillumbik Shire Council", "type": "infocouncil", "base": "https://nillumbik.infocouncil.biz"},
+  {"id": "WHIT", "name": "Whittlesea City Council", "type": "infocouncil", "base": "https://whittlesea.infocouncil.biz"},
+  {"id": "WYNH", "name": "Wyndham City Council", "type": "infocouncil", "base": "https://wyndham.infocouncil.biz"},
+  {"id": "WHIT2", "name": "Whitehorse City Council", "type": "infocouncil", "base": "https://whitehorse.infocouncil.biz"},
+  {"id": "YARRR", "name": "Yarra Ranges Council", "type": "infocouncil", "base": "https://yarraranges.infocouncil.biz"}
+]
