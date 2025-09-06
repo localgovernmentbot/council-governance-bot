@@ -40,30 +40,37 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: Install dependencies
+    - name: Install core dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install requests beautifulsoup4 lxml python-dateutil
+        pip install "atproto>=0.0.49,<1.0"
+        pip install cloudscraper pandas python-dotenv
+        # Install remaining dependencies, allow failures for optional ones
+        pip install -r requirements.txt || true
     
     - name: Run universal scraper
       run: |
         if [ "${{ github.event.inputs.councils }}" != "" ]; then
           python universal_scraper.py --limit ${{ github.event.inputs.councils }}
         else
-          python universal_scraper.py
+          # For now, just scrape M9 councils that we know work
+          python m9_unified_scraper.py
         fi
     
     - name: Upload results
       uses: actions/upload-artifact@v3
       with:
         name: scraping-results
-        path: all_councils_results.json
+        path: |
+          m9_scraper_results.json
+          all_councils_results.json
     
     - name: Commit results
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add all_councils_results.json
+        git add m9_scraper_results.json all_councils_results.json || true
         git diff --staged --quiet || git commit -m "Update scraping results [skip ci]"
         git push || true
 
@@ -81,10 +88,12 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: Install dependencies
+    - name: Install core dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install requests beautifulsoup4 python-dateutil
+        pip install "atproto>=0.0.49,<1.0"
+        pip install python-dotenv
     
     - name: Post to BlueSky
       env:
@@ -95,13 +104,14 @@ jobs:
         if [ "$POSTS" == "" ]; then
           POSTS="3"
         fi
-        python enhanced_scheduler.py --batch $POSTS --once
+        # Use the original scheduler which we know works
+        python scripts/run_scheduler.py --live --max-posts $POSTS
     
     - name: Commit posting record
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add posted_bluesky.json posts.md
+        git add posted_bluesky.json posts.md || true
         git diff --staged --quiet || git commit -m "Update posting records [skip ci]"
         git push || true
 
@@ -117,17 +127,19 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: Install dependencies
+    - name: Install core dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install requests beautifulsoup4 lxml python-dateutil
+        pip install "atproto>=0.0.49,<1.0"
+        pip install cloudscraper pandas python-dotenv
     
     - name: Run scraper
       run: |
         if [ "${{ github.event.inputs.councils }}" != "" ]; then
           python universal_scraper.py --limit ${{ github.event.inputs.councils }}
         else
-          python universal_scraper.py
+          python m9_unified_scraper.py
         fi
     
     - name: Post to BlueSky
@@ -139,12 +151,12 @@ jobs:
         if [ "$POSTS" == "" ]; then
           POSTS="5"
         fi
-        python enhanced_scheduler.py --batch $POSTS --once
+        python scripts/run_scheduler.py --live --max-posts $POSTS
     
     - name: Commit all changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add all_councils_results.json posted_bluesky.json posts.md
+        git add m9_scraper_results.json all_councils_results.json posted_bluesky.json posts.md || true
         git diff --staged --quiet || git commit -m "Update bot data [skip ci]"
         git push || true

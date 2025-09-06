@@ -6,7 +6,6 @@ python-dateutil>=2.8.2
 
 # BlueSky integration
 atproto>=0.0.49,<1.0
-atproto-client>=0.0.48
 
 # Web scraping
 cloudscraper>=1.2.71
@@ -27,7 +26,7 @@ pandas>=2.1.0
 python-dotenv>=1.0.0
 click>=8.1.7
 
-# Development & Testing
+# Development & Testing (optional)
 pytest>=7.4.3
 pytest-cov>=4.1.0
 black>=23.11.0
