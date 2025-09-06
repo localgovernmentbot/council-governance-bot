@@ -45,4 +45,7 @@
   ,{"id": "FRAN-DP", "name": "Frankston City Council", "type": "direct_page", "page_url": "https://www.frankston.vic.gov.au/Council/Council-and-committee-meetings/Upcoming-Council-Meeting-Agendas-2025", "base": "https://www.frankston.vic.gov.au", "link_selector": "a[href$='.pdf']"}
   ,{"id": "WHIT2-DP2", "name": "Whitehorse City Council (dates)", "type": "direct_page", "page_url": "https://www.whitehorse.vic.gov.au/about-council/council-meetings/council-meeting-dates", "base": "https://www.whitehorse.vic.gov.au", "link_selector": "a[href$='.pdf']"}
   ,{"id": "YARRR-DP2", "name": "Yarra Ranges Council (schedule)", "type": "direct_page", "page_url": "https://www.yarraranges.vic.gov.au/Our-Council/Council-meetings/Council-meeting-schedule", "base": "https://www.yarraranges.vic.gov.au", "link_selector": "a[href$='.pdf']"}
+  ,{"id": "BAYS-DP", "name": "Bayside City Council", "type": "direct_page", "page_url": "https://www.bayside.vic.gov.au/council/council-meetings", "base": "https://www.bayside.vic.gov.au", "link_selector": "a[href*='.pdf']"}
+  ,{"id": "GDAN-DP", "name": "Greater Dandenong City Council", "type": "direct_page", "page_url": "https://www.greaterdandenong.vic.gov.au/council-meetings", "base": "https://www.greaterdandenong.vic.gov.au", "link_selector": "a[href*='.pdf']"}
+  ,{"id": "CASE-DP", "name": "City of Casey", "type": "direct_page", "page_url": "https://www.casey.vic.gov.au/council-meeting-schedule-upcoming-council-business", "base": "https://www.casey.vic.gov.au", "link_selector": "a[href*='.pdf']"}
 ]

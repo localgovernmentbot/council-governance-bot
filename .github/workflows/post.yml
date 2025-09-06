@@ -38,7 +38,7 @@ jobs:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
           MAX_POSTS_PER_RUN: '2'
-          PER_COUNCIL_COOLDOWN_HOURS: '6'
+          PER_COUNCIL_COOLDOWN_HOURS: '3'
           POST_SUMMARY: '0'
           FAST_PREVIEW: '1'
           # Relax freshness windows temporarily to increase coverage

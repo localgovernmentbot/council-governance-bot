@@ -37,7 +37,8 @@ class DirectPageScraper(BaseM9Scraper):
         soup = BeautifulSoup(html, 'html.parser')
         results: List[MeetingDocument] = []
 
-        for a in soup.select(self.cfg.link_selector):
+        selector = self.cfg.link_selector or "a[href*='.pdf']"
+        for a in soup.select(selector):
             href = a.get('href') or ''
             text = (a.get_text() or '').strip()
             if not href:
@@ -77,4 +78,3 @@ class DirectPageScraper(BaseM9Scraper):
                 seen.add(d.url); uniq.append(d)
         uniq.sort(key=lambda x: x.date, reverse=True)
         return uniq
-
