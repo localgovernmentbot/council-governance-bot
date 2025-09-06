@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
 jobs:
@@ -96,3 +96,14 @@ jobs:
             COVERAGE_SUMMARY.txt
           if-no-files-found: error
           retention-days: 14
+
+      - name: Commit coverage.md to repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          mkdir -p docs
+          cp -f coverage_summary.json docs/coverage_summary.json || true
+          git add coverage.md coverage_summary.json COVERAGE_SUMMARY.txt docs/coverage_summary.json || true
+          git commit -m "docs: update coverage.md [skip ci]" || echo "No changes"
+          git pull --rebase --autostash origin main || true
+          git push || true

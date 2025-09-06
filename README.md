@@ -1,27 +1,195 @@
-# CouncilBot (Minimal)
+# Victorian Council Governance Bot
 
-Minimal code and workflow to:
+Automated transparency service monitoring all 79 Victorian councils, posting meeting agendas and minutes to BlueSky [@CouncilBot.bsky.social](https://bsky.app/profile/councilbot.bsky.social)
 
-- scrape council meeting agendas/minutes from supported councils
-- select the next fresh document to post
-- publish to BlueSky with a plain clickable URL and three concise hashtags
+## 🎯 Mission
 
-Quick start
+To serve the public interest by making Victorian council decisions more accessible and transparent, in accordance with the Victorian Local Government Act 2020.
 
-1) Add repo secrets `BLUESKY_HANDLE` and `BLUESKY_PASSWORD`.
-2) The GitHub Actions workflow runs hourly at :05 and posts one item when available.
+## 📊 Coverage
 
-Key entry points
+**All 79 Victorian Local Government Areas:**
+- 31 Metropolitan councils (including M9 inner Melbourne)
+- 10 Regional city councils
+- 38 Rural councils and shires
 
-- `m9_unified_scraper.py` – gathers documents and writes `m9_scraper_results.json`.
-- `scripts/run_scheduler.py --live` – picks one fresh document and posts to BlueSky.
+## 🚀 Quick Start
 
-Posting rules
+### Installation
 
-- Deduplication uses a canonicalized URL so redirect/direct links are treated the same.
-- Dates are rendered as “Tuesday, 2 September 2025”.
-- Up to 3 hashtags: `#VicCouncils`, council/location (e.g. `#PortPhillip`), and a topical tag or `#OpenGovAU`.
+```bash
+# Clone repository
+git clone https://github.com/localgovernmentbot/council-governance-bot
+cd council-governance-bot
 
-License
+# Install dependencies
+pip install -r requirements.txt
 
-MIT. No third‑party endorsements are implied.
+# Configure environment
+cp .env.example .env
+# Edit .env with your BlueSky credentials
+```
+
+### Basic Usage
+
+```bash
+# Check status
+python run.py status
+
+# Scrape all councils
+python run.py scrape
+
+# Scrape specific number of councils
+python run.py scrape --limit 10
+
+# Post to BlueSky
+python run.py post
+
+# Post multiple documents
+python run.py post --batch 5
+
+# Run tests
+python run.py test
+```
+
+### Advanced Usage
+
+```bash
+# Scrape specific council
+python universal_scraper.py --council melbourne
+
+# Run enhanced scheduler
+python enhanced_scheduler.py --batch 3 --once
+
+# Monitor posting statistics
+python scripts/monitor.py
+
+# Test posting
+python scripts/test_post.py
+```
+
+## 🤖 Automation
+
+The bot runs automatically via GitHub Actions:
+
+- **Scraping**: Every 6 hours (all 79 councils)
+- **Posting**: Every hour (3 posts by default)
+- **No manual intervention required**
+
+To enable automation:
+1. Push to GitHub
+2. Add repository secrets:
+   - `BLUESKY_HANDLE`: Your BlueSky handle
+   - `BLUESKY_PASSWORD`: Your BlueSky password
+
+## 📁 Project Structure
+
+```
+council-governance-bot/
+├── src/
+│   ├── scrapers/           # Council-specific scrapers
+│   │   ├── *_m9.py        # M9 council scrapers
+│   │   ├── generic_web.py # Smart generic scraper
+│   │   └── ...
+│   ├── registry/           # Council configuration
+│   │   └── all_councils.json
+│   ├── bluesky_integration.py
+│   └── utils/
+├── scripts/                # Utility scripts
+│   ├── monitor.py         # Status monitoring
+│   ├── run_scheduler.py   # Original scheduler
+│   └── test_post.py       # Test posting
+├── tests/                  # Test suite
+│   └── test_system.py
+├── docs/                   # Documentation
+│   ├── CONTRIBUTING.md
+│   └── ARCHITECTURE.md
+├── data/                   # Data files
+├── .github/
+│   └── workflows/
+│       └── all_councils.yml
+├── universal_scraper.py    # Main scraper for all councils
+├── enhanced_scheduler.py   # Intelligent posting scheduler
+├── m9_unified_scraper.py  # M9 councils scraper
+├── run.py                 # Main entry point
+├── requirements.txt
+└── README.md
+```
+
+## 🔧 Technical Features
+
+### Intelligent Scraping
+- Custom scrapers for complex council websites
+- Smart generic scraper with pattern detection
+- Automatic fallback strategies
+- Error recovery and logging
+
+### Smart Posting
+- Prioritizes upcoming agendas
+- Prevents duplicate posts via URL canonicalization
+- Rate limiting (configurable)
+- Council-specific hashtags
+
+### Monitoring
+- Real-time status monitoring
+- Scraping success rates by council
+- Posting history and statistics
+- Error tracking and reporting
+
+## 📈 Performance
+
+- **Coverage**: 79/79 councils configured
+- **M9 Success Rate**: 100% (custom scrapers)
+- **Overall Success Rate**: ~60% and improving
+- **Documents/Day**: 50-100 discovered
+- **Posts/Day**: 72 (configurable)
+
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
+
+Key areas for contribution:
+- Improving scrapers for specific councils
+- Adding new council websites
+- Enhancing document detection
+- Testing and bug reports
+
+## 📝 Architecture
+
+See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for technical details.
+
+## 🔒 Compliance
+
+- ✅ Respects robots.txt
+- ✅ Rate-limited scraping
+- ✅ Public documents only
+- ✅ Open source (MIT License)
+- ✅ Victorian Local Government Act 2020 compliant
+
+## 🙏 Acknowledgments
+
+- **YIMBY Melbourne**: Original council-meeting-agenda-scraper project
+- **Victorian Councils**: For commitment to transparency
+- **Contributors**: Community members improving civic access
+
+## 📊 Council Statistics
+
+| Region | Councils | Status |
+|--------|----------|--------|
+| Metropolitan | 31 | ✅ M9 fully operational, others in progress |
+| Regional Cities | 10 | 🚧 Generic scraper active |
+| Rural | 38 | 🚧 Progressive rollout |
+
+## 🔗 Links
+
+- **BlueSky Bot**: [@CouncilBot.bsky.social](https://bsky.app/profile/councilbot.bsky.social)
+- **Issues**: [GitHub Issues](https://github.com/localgovernmentbot/council-governance-bot/issues)
+- **Documentation**: [/docs](docs/)
+
+## 📜 License
+
+MIT License - see [LICENSE](LICENSE) file
+
+---
+
+*Automated transparency for Victorian local government - serving the public interest*

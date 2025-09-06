@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CouncilBot Coverage</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; color: #222; }
+      h1 { margin: 0 0 0.5rem 0; font-size: 1.8rem; }
+      .meta { color: #555; margin-bottom: 1rem; }
+      .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 0.4rem; color: #fff; font-weight: 600; margin: 0.5rem 0 1rem; }
+      .ok { background: #2da44e; }
+      .warn { background: #d29922; }
+      .low { background: #6e7781; }
+      table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+      th, td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e5e5e5; }
+      th { text-align: left; background: #fafafa; position: sticky; top: 0; }
+      .status-active { color: #2da44e; font-weight: 600; }
+      .status-zero { color: #6e7781; }
+      .pill { padding: 0.1rem 0.4rem; border-radius: 0.4rem; background: #f2f4f5; font-size: 0.85rem; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+      .card { border: 1px solid #eee; border-radius: 8px; padding: 1rem; background: #fff; }
+      .small { color: #666; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <h1>CouncilBot Coverage (±<span id="window">30</span> days)</h1>
+    <div class="meta">Generated: <span id="generated">...</span></div>
+    <div id="badge" class="badge low">Coverage 0%</div>
+
+    <div class="grid">
+      <div class="card"><div class="small">Active councils</div><div id="active" style="font-size:1.6rem;font-weight:700">0</div></div>
+      <div class="card"><div class="small">Zero councils</div><div id="zero" style="font-size:1.6rem;font-weight:700">0</div></div>
+      <div class="card"><div class="small">Total councils</div><div id="total" style="font-size:1.6rem;font-weight:700">0</div></div>
+    </div>
+
+    <h2>Zero‑item Councils</h2>
+    <ul id="zeros"></ul>
+
+    <h2>Per‑Council Details</h2>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Council</th>
+          <th>Status</th>
+          <th>Last Date</th>
+          <th>Agendas</th>
+          <th>Minutes</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      async function load() {
+        try {
+          const resp = await fetch('coverage_summary.json', { cache: 'no-store' });
+          if (!resp.ok) throw new Error('Failed to fetch coverage_summary.json');
+          const data = await resp.json();
+          const total = (data.active_count || 0) + (data.zero_count || 0);
+          const pct = total ? Math.round((data.active_count / total) * 100) : 0;
+          const badge = document.getElementById('badge');
+          badge.textContent = `Coverage ${pct}%`;
+          badge.classList.remove('ok','warn','low');
+          badge.classList.add(pct >= 80 ? 'ok' : (pct >= 50 ? 'warn' : 'low'));
+
+          document.getElementById('window').textContent = data.window_days;
+          document.getElementById('generated').textContent = new Date(data.generated_at).toLocaleString();
+          document.getElementById('active').textContent = data.active_count;
+          document.getElementById('zero').textContent = data.zero_count;
+          document.getElementById('total').textContent = total;
+
+          const zeros = document.getElementById('zeros');
+          zeros.innerHTML = '';
+          (data.zero_councils || []).forEach(c => {
+            const li = document.createElement('li');
+            li.textContent = c;
+            zeros.appendChild(li);
+          });
+
+          // Build table: active first (desc), then zeros alpha
+          const rows = [];
+          (data.active_councils || []).forEach(r => {
+            rows.push({name: r.name, status: 'active', last: '', agendas: r.agendas, minutes: r.minutes, total: r.total});
+          });
+          (data.zero_councils || []).forEach(name => rows.push({name, status: 'zero', last: '', agendas: 0, minutes: 0, total: 0}));
+
+          const tbody = document.querySelector('#table tbody');
+          tbody.innerHTML = '';
+          rows.forEach(r => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${r.name}</td>
+              <td class="status-${r.status}"><span class="pill">${r.status}</span></td>
+              <td>${r.last || ''}</td>
+              <td>${r.agendas}</td>
+              <td>${r.minutes}</td>
+              <td>${r.total}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (e) {
+          document.body.insertAdjacentHTML('beforeend', `<p style="color:#b00">Error: ${e.message}</p>`);
+        }
+      }
+      load();
+    </script>
+  </body>
+  </html>
+

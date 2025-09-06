@@ -7,7 +7,7 @@ on:
 
 concurrency:
   group: councilbot-post
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write  # allow committing posted state back to repo
@@ -37,8 +37,8 @@ jobs:
         env:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
-          MAX_POSTS_PER_RUN: '2'
-          PER_COUNCIL_COOLDOWN_HOURS: '3'
+          MAX_POSTS_PER_RUN: '3'
+          PER_COUNCIL_COOLDOWN_HOURS: '2'
           POST_SUMMARY: '0'
           FAST_PREVIEW: '1'
           # Relax freshness windows temporarily to increase coverage
@@ -52,7 +52,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           # Force-add JSON outputs even if gitignored
-          git add -f posted_bluesky.json m9_scraper_results.json || true
+          git add -f posted_bluesky.json m9_scraper_results.json posts.md || true
           git commit -m "Update posted state [skip ci]" || echo "No changes"
           # Avoid push races with prior runs
           git pull --rebase --autostash origin main || true

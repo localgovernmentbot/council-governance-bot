@@ -1,0 +1,150 @@
+name: All Victorian Councils Bot
+
+on:
+  schedule:
+    # Run scraping every 6 hours
+    - cron: '0 */6 * * *'
+    # Post to BlueSky every hour
+    - cron: '5 * * * *'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'scrape'
+        type: choice
+        options:
+          - scrape
+          - post
+          - both
+      councils:
+        description: 'Number of councils to scrape (blank for all)'
+        required: false
+        type: string
+      posts:
+        description: 'Number of posts to make'
+        required: false
+        default: '5'
+        type: string
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'schedule' && contains(github.event.schedule, '0 */6')) || (github.event_name == 'workflow_dispatch' && contains(github.event.inputs.action, 'scrape'))
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run universal scraper
+      run: |
+        if [ "${{ github.event.inputs.councils }}" != "" ]; then
+          python universal_scraper.py --limit ${{ github.event.inputs.councils }}
+        else
+          python universal_scraper.py
+        fi
+    
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: scraping-results
+        path: all_councils_results.json
+    
+    - name: Commit results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add all_councils_results.json
+        git diff --staged --quiet || git commit -m "Update scraping results [skip ci]"
+        git push || true
+
+  post:
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'schedule' && contains(github.event.schedule, '5 *')) || (github.event_name == 'workflow_dispatch' && contains(github.event.inputs.action, 'post'))
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Post to BlueSky
+      env:
+        BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+        BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+      run: |
+        POSTS="${{ github.event.inputs.posts }}"
+        if [ "$POSTS" == "" ]; then
+          POSTS="3"
+        fi
+        python enhanced_scheduler.py --batch $POSTS --once
+    
+    - name: Commit posting record
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add posted_bluesky.json posts.md
+        git diff --staged --quiet || git commit -m "Update posting records [skip ci]"
+        git push || true
+
+  both:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'both'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run scraper
+      run: |
+        if [ "${{ github.event.inputs.councils }}" != "" ]; then
+          python universal_scraper.py --limit ${{ github.event.inputs.councils }}
+        else
+          python universal_scraper.py
+        fi
+    
+    - name: Post to BlueSky
+      env:
+        BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+        BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+      run: |
+        POSTS="${{ github.event.inputs.posts }}"
+        if [ "$POSTS" == "" ]; then
+          POSTS="5"
+        fi
+        python enhanced_scheduler.py --batch $POSTS --once
+    
+    - name: Commit all changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add all_councils_results.json posted_bluesky.json posts.md
+        git diff --staged --quiet || git commit -m "Update bot data [skip ci]"
+        git push || true

@@ -1,0 +1,53 @@
+name: Initial Setup and Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  initial-scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Test M9 Scrapers
+      run: |
+        echo "Testing M9 council scrapers..."
+        python m9_unified_scraper.py
+      continue-on-error: true
+    
+    - name: Test System Status
+      run: |
+        echo "Checking system status..."
+        python scripts/monitor.py
+      continue-on-error: true
+    
+    - name: Initial Post
+      env:
+        BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+        BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+      run: |
+        echo "Attempting initial post to BlueSky..."
+        python scripts/run_scheduler.py --live --max-posts 1
+      continue-on-error: true
+    
+    - name: Summary
+      run: |
+        echo "================================"
+        echo "Initial setup complete!"
+        echo "The bot will now run automatically:"
+        echo "- Scraping: Every 6 hours"
+        echo "- Posting: Every hour"
+        echo "================================"

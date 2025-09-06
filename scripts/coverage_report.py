@@ -3,7 +3,8 @@
 Generate a coverage report for CouncilBot over a relaxed ±30 day window.
 
 Reads m9_scraper_results.json, aggregates per-council counts, highlights
-councils with zero items, and writes coverage_summary.json. If available,
+councils with zero items, and writes coverage_summary.json. Also generates
+coverage.md with a table and a coverage badge. If available,
 uses src/registry/councils.json to include councils configured in the
 registry + the built-in M9 councils.
 """
@@ -67,22 +68,31 @@ def main():
     # Build counts within ±WINDOW_DAYS for both agendas and minutes
     counts = {}
     for c in councils:
-        counts[c] = {"agendas": 0, "minutes": 0, "total": 0}
+        counts[c] = {"agendas": 0, "minutes": 0, "total": 0, "last_date": ""}
 
     for doc in all_docs:
         cname = doc.get('council_name') or ''
         if not cname:
             continue
-        if not within_window(doc.get('date', '')):
+        dstr = doc.get('date', '')
+        in_win = within_window(dstr)
+        if not in_win:
             continue
         dtype = (doc.get('document_type') or '').lower()
         if cname not in counts:
-            counts[cname] = {"agendas": 0, "minutes": 0, "total": 0}
+            counts[cname] = {"agendas": 0, "minutes": 0, "total": 0, "last_date": ""}
         if dtype == 'agenda':
             counts[cname]['agendas'] += 1
         elif dtype == 'minutes':
             counts[cname]['minutes'] += 1
         counts[cname]['total'] += 1
+        # Track most recent date within window
+        try:
+            cur = counts[cname]['last_date']
+            if not cur or (dstr > cur):
+                counts[cname]['last_date'] = dstr
+        except Exception:
+            pass
 
     zero_councils = [c for c, v in counts.items() if v['total'] == 0]
     active_councils = [
@@ -111,7 +121,33 @@ def main():
         for c in zero_councils:
             print('-', c)
 
+    # Generate coverage.md with badge + table
+    total = len(counts)
+    covered = summary['active_count']
+    pct = int(round((covered / total) * 100)) if total else 0
+    badge = f"![coverage](https://img.shields.io/badge/Coverage-{pct}%25-{'brightgreen' if pct>=80 else 'yellow' if pct>=50 else 'lightgrey'})"
+    lines = []
+    lines.append('# CouncilBot Coverage (±{} days)'.format(WINDOW_DAYS))
+    lines.append('')
+    lines.append(badge)
+    lines.append('')
+    lines.append('- Generated: {}'.format(summary['generated_at']))
+    lines.append('- Active councils: {} / {}'.format(covered, total))
+    lines.append('')
+    lines.append('| Council | Status | Last Date | Agendas | Minutes | Total |')
+    lines.append('|---|---|---:|---:|---:|---:|')
+    # Build unified ordered list: active first (by total desc), then zeros alpha
+    table_rows = []
+    for row in active_councils:
+        name = row['name']
+        ld = counts.get(name, {}).get('last_date', '')
+        table_rows.append((name, 'active', ld, row['agendas'], row['minutes'], row['total']))
+    for name in sorted(zero_councils):
+        table_rows.append((name, 'zero', '', 0, 0, 0))
+    for name, status, ld, ag, mn, tot in table_rows:
+        lines.append(f'| {name} | {status} | {ld or ""} | {ag} | {mn} | {tot} |')
+    Path('coverage.md').write_text('\n'.join(lines) + '\n')
+
 
 if __name__ == '__main__':
     main()
-

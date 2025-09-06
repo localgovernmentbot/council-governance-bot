@@ -1,0 +1,646 @@
+{
+  "councils": [
+    {
+      "id": "melbourne",
+      "name": "City of Melbourne",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "MelbourneScraper",
+      "meeting_url": "https://www.melbourne.vic.gov.au/council-meetings",
+      "hashtag": "Melbourne"
+    },
+    {
+      "id": "port_phillip",
+      "name": "City of Port Phillip",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "PortPhillipFinalScraper",
+      "meeting_url": "https://www.portphillip.vic.gov.au/about-the-council/council-meetings/timetable-council-meetings",
+      "hashtag": "PortPhillip"
+    },
+    {
+      "id": "hobsons_bay",
+      "name": "Hobsons Bay City Council",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "HobsonsBayScraper",
+      "meeting_url": "https://www.hobsonsbay.vic.gov.au/Council/Council-meetings/Council-meeting-timetable",
+      "hashtag": "HobsonsBay"
+    },
+    {
+      "id": "maribyrnong",
+      "name": "Maribyrnong City Council",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "MaribyrnongScraper",
+      "meeting_url": "https://www.maribyrnong.vic.gov.au/About/Council-and-committee-meetings/2025-Schedule-of-Meeting-Dates",
+      "hashtag": "Maribyrnong"
+    },
+    {
+      "id": "moonee_valley",
+      "name": "Moonee Valley City Council",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "MooneeValleyFixedScraper",
+      "meeting_url": "https://mvcc.vic.gov.au/my-council/council-meetings/",
+      "hashtag": "MooneeValley"
+    },
+    {
+      "id": "merri_bek",
+      "name": "Merri-bek City Council",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "MerribekScraper",
+      "meeting_url": "https://www.merri-bek.vic.gov.au/my-council/council-and-committee-meetings/council-meetings/nextcouncilmeetingagenda/",
+      "hashtag": "Merribek"
+    },
+    {
+      "id": "darebin",
+      "name": "Darebin City Council",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "DarebinScraper",
+      "meeting_url": "https://www.darebin.vic.gov.au/About-council/Council-structure-and-performance/Council-and-Committee-Meetings/Council-meetings",
+      "hashtag": "Darebin"
+    },
+    {
+      "id": "yarra",
+      "name": "Yarra City Council",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "YarraFixedScraper",
+      "meeting_url": "https://www.yarracity.vic.gov.au/about-us/council-and-committee-meetings/council-meetings",
+      "hashtag": "Yarra"
+    },
+    {
+      "id": "stonnington",
+      "name": "City of Stonnington",
+      "region": "Metropolitan",
+      "type": "m9",
+      "scraper": "StonningtonFixedScraper",
+      "meeting_url": "https://www.stonnington.vic.gov.au/About/About-Council/Council-meetings",
+      "hashtag": "Stonnington"
+    },
+    {
+      "id": "brimbank",
+      "name": "Brimbank City Council",
+      "region": "Metropolitan",
+      "type": "infocouncil",
+      "base_url": "https://www.brimbank.vic.gov.au",
+      "meeting_url": "https://www.brimbank.vic.gov.au/agendas-and-minutes",
+      "hashtag": "Brimbank"
+    },
+    {
+      "id": "melton",
+      "name": "Melton City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.melton.vic.gov.au/Council/Publications/Public-notices/Council-Meeting-Schedule-2025-Melton-City-Council",
+      "hashtag": "Melton"
+    },
+    {
+      "id": "hume",
+      "name": "Hume City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.hume.vic.gov.au/Your-Council/Council-Meetings/Council-Meeting-Dates",
+      "hashtag": "Hume"
+    },
+    {
+      "id": "banyule",
+      "name": "Banyule City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.banyule.vic.gov.au/About-us/Councillors-and-Council-meetings/Council-meetings/Council-meeting-annual-schedule",
+      "hashtag": "Banyule"
+    },
+    {
+      "id": "nillumbik",
+      "name": "Nillumbik Shire Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.nillumbik.vic.gov.au/Council/Council-and-PCC-meetings/Council-meetings/Meeting-schedule",
+      "hashtag": "Nillumbik"
+    },
+    {
+      "id": "manningham",
+      "name": "Manningham City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.manningham.vic.gov.au/about-council/how-council-works/council-meetings",
+      "hashtag": "Manningham"
+    },
+    {
+      "id": "boroondara",
+      "name": "City of Boroondara",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.boroondara.vic.gov.au/your-council/news-and-media/public-notices/public-notice-boroondara-city-council-meeting-schedule-2025",
+      "hashtag": "Boroondara"
+    },
+    {
+      "id": "monash",
+      "name": "City of Monash",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.monash.vic.gov.au/About-Us/Council/Council-Meetings/Council-Meetings-Schedule",
+      "hashtag": "Monash"
+    },
+    {
+      "id": "whitehorse",
+      "name": "Whitehorse City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.whitehorse.vic.gov.au/about-council/council-meetings/council-meeting-dates",
+      "hashtag": "Whitehorse"
+    },
+    {
+      "id": "knox",
+      "name": "Knox City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.knox.vic.gov.au/our-council/councillors-and-meetings/council-meetings/council-meetings",
+      "hashtag": "Knox"
+    },
+    {
+      "id": "maroondah",
+      "name": "Maroondah City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.maroondah.vic.gov.au/About-Council/Council-meetings/Council-meeting-schedule",
+      "hashtag": "Maroondah"
+    },
+    {
+      "id": "glen_eira",
+      "name": "Glen Eira City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.gleneira.vic.gov.au/about-council/meetings-and-agendas/council-meeting-information",
+      "hashtag": "GlenEira"
+    },
+    {
+      "id": "bayside",
+      "name": "Bayside City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.bayside.vic.gov.au/council/council-meetings",
+      "hashtag": "Bayside"
+    },
+    {
+      "id": "kingston",
+      "name": "City of Kingston",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.kingston.vic.gov.au/council/your-council/council-meetings",
+      "hashtag": "Kingston"
+    },
+    {
+      "id": "frankston",
+      "name": "Frankston City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.frankston.vic.gov.au/Council/Council-and-committee-meetings/Upcoming-Council-Meeting-Agendas-2025",
+      "hashtag": "Frankston"
+    },
+    {
+      "id": "mornington_peninsula",
+      "name": "Mornington Peninsula Shire",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.mornpen.vic.gov.au/About-Us/About-Our-Council/Council-Meetings/Meeting-Dates-2025",
+      "hashtag": "MorningtonPeninsula"
+    },
+    {
+      "id": "greater_dandenong",
+      "name": "Greater Dandenong City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.greaterdandenong.vic.gov.au/council-meetings",
+      "hashtag": "GreaterDandenong"
+    },
+    {
+      "id": "casey",
+      "name": "City of Casey",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.casey.vic.gov.au/council-meeting-schedule-upcoming-council-business",
+      "hashtag": "Casey"
+    },
+    {
+      "id": "cardinia",
+      "name": "Cardinia Shire Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.cardinia.vic.gov.au/meetings/committee/1/council_meeting",
+      "hashtag": "Cardinia"
+    },
+    {
+      "id": "yarra_ranges",
+      "name": "Yarra Ranges Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.yarraranges.vic.gov.au/Our-Council/Council-meetings/Council-meeting-schedule",
+      "hashtag": "YarraRanges"
+    },
+    {
+      "id": "whittlesea",
+      "name": "City of Whittlesea",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.whittlesea.vic.gov.au/About-us/Council/Council-meetings/Meeting-dates-and-procedures",
+      "hashtag": "Whittlesea"
+    },
+    {
+      "id": "wyndham",
+      "name": "Wyndham City Council",
+      "region": "Metropolitan",
+      "type": "generic",
+      "meeting_url": "https://www.wyndham.vic.gov.au/about-council/your-council/council-and-committee-meetings/council-planning-committee-contracts",
+      "hashtag": "Wyndham"
+    },
+    {
+      "id": "queenscliffe",
+      "name": "Borough of Queenscliffe",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.queenscliffe.vic.gov.au/council/meetings/council-meetings",
+      "hashtag": "Queenscliffe"
+    },
+    {
+      "id": "greater_geelong",
+      "name": "City of Greater Geelong",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.geelongaustralia.com.au/meetings/",
+      "hashtag": "Geelong"
+    },
+    {
+      "id": "colac_otway",
+      "name": "Colac Otway Shire",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.colacotway.vic.gov.au/Council-the-shire/Council-meetings/Council-meetings-and-committees",
+      "hashtag": "ColacOtway"
+    },
+    {
+      "id": "corangamite",
+      "name": "Corangamite Shire",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.corangamite.vic.gov.au/Council/Council-meetings",
+      "hashtag": "Corangamite"
+    },
+    {
+      "id": "glenelg",
+      "name": "Glenelg Shire",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.glenelg.vic.gov.au/Council/Council-meetings/Council-meeting-dates",
+      "hashtag": "Glenelg"
+    },
+    {
+      "id": "southern_grampians",
+      "name": "Southern Grampians Shire",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.sthgrampians.vic.gov.au/Page/Page.asp?Page_Id=1080",
+      "hashtag": "SouthernGrampians"
+    },
+    {
+      "id": "surf_coast",
+      "name": "Surf Coast Shire",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.surfcoast.vic.gov.au/About-us/Council/Council-meetings-agendas-minutes",
+      "hashtag": "SurfCoast"
+    },
+    {
+      "id": "warrnambool",
+      "name": "Warrnambool City Council",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.warrnambool.vic.gov.au/council/council-meetings",
+      "hashtag": "Warrnambool"
+    },
+    {
+      "id": "ararat",
+      "name": "Ararat Rural City",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.ararat.vic.gov.au/council/meetings-agendas-and-minutes",
+      "hashtag": "Ararat"
+    },
+    {
+      "id": "hepburn",
+      "name": "Hepburn Shire",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.hepburn.vic.gov.au/council/council-meetings",
+      "hashtag": "Hepburn"
+    },
+    {
+      "id": "hindmarsh",
+      "name": "Hindmarsh Shire",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.hindmarsh.vic.gov.au/council-meetings",
+      "hashtag": "Hindmarsh"
+    },
+    {
+      "id": "horsham",
+      "name": "Horsham Rural City",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.hrcc.vic.gov.au/Our-Council/Council-Meetings",
+      "hashtag": "Horsham"
+    },
+    {
+      "id": "northern_grampians",
+      "name": "Northern Grampians Shire",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.ngshire.vic.gov.au/Council/Your-Council/Council-Meetings",
+      "hashtag": "NorthernGrampians"
+    },
+    {
+      "id": "pyrenees",
+      "name": "Pyrenees Shire",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.pyrenees.vic.gov.au/Council/Council-meetings",
+      "hashtag": "Pyrenees"
+    },
+    {
+      "id": "west_wimmera",
+      "name": "West Wimmera Shire",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.westwimmera.vic.gov.au/Council/Your-Council/Council-Meetings/Council-Meetings",
+      "hashtag": "WestWimmera"
+    },
+    {
+      "id": "yarriambiack",
+      "name": "Yarriambiack Shire",
+      "region": "Grampians",
+      "type": "generic",
+      "meeting_url": "https://www.yarriambiack.vic.gov.au/council/council-meetings",
+      "hashtag": "Yarriambiack"
+    },
+    {
+      "id": "buloke",
+      "name": "Buloke Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.buloke.vic.gov.au/council-meetings",
+      "hashtag": "Buloke"
+    },
+    {
+      "id": "campaspe",
+      "name": "Campaspe Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.campaspe.vic.gov.au/council-meetings",
+      "hashtag": "Campaspe"
+    },
+    {
+      "id": "central_goldfields",
+      "name": "Central Goldfields Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.centralgoldfields.vic.gov.au/Our-Council/Meetings-and-Agendas/Council-Meetings",
+      "hashtag": "CentralGoldfields"
+    },
+    {
+      "id": "greater_bendigo",
+      "name": "City of Greater Bendigo",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.bendigo.vic.gov.au/About/Meetings/Council-meetings",
+      "hashtag": "Bendigo"
+    },
+    {
+      "id": "gannawarra",
+      "name": "Gannawarra Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.gsc.vic.gov.au/council/meetings",
+      "hashtag": "Gannawarra"
+    },
+    {
+      "id": "loddon",
+      "name": "Loddon Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.loddon.vic.gov.au/Our-Council/Council-meetings",
+      "hashtag": "Loddon"
+    },
+    {
+      "id": "macedon_ranges",
+      "name": "Macedon Ranges Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.mrsc.vic.gov.au/About-Council/Our-council/Council-meetings",
+      "hashtag": "MacedonRanges"
+    },
+    {
+      "id": "mildura",
+      "name": "Mildura Rural City",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.mildura.vic.gov.au/Council/Council-Meetings/Council-Meeting-Dates",
+      "hashtag": "Mildura"
+    },
+    {
+      "id": "mount_alexander",
+      "name": "Mount Alexander Shire",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.mountalexander.vic.gov.au/Council_Meetings",
+      "hashtag": "MountAlexander"
+    },
+    {
+      "id": "swan_hill",
+      "name": "Swan Hill Rural City",
+      "region": "Loddon Mallee",
+      "type": "generic",
+      "meeting_url": "https://www.swanhill.vic.gov.au/Your-Council/Council-meetings",
+      "hashtag": "SwanHill"
+    },
+    {
+      "id": "alpine",
+      "name": "Alpine Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.alpineshire.vic.gov.au/council/meetings",
+      "hashtag": "Alpine"
+    },
+    {
+      "id": "benalla",
+      "name": "Benalla Rural City",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.benalla.vic.gov.au/Your-Council/Council-Meetings",
+      "hashtag": "Benalla"
+    },
+    {
+      "id": "greater_shepparton",
+      "name": "Greater Shepparton City",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.greatershepparton.com.au/council/meeting-agendas-and-minutes",
+      "hashtag": "Shepparton"
+    },
+    {
+      "id": "indigo",
+      "name": "Indigo Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.indigoshire.vic.gov.au/Council/Council-meetings",
+      "hashtag": "Indigo"
+    },
+    {
+      "id": "mansfield",
+      "name": "Mansfield Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.mansfield.vic.gov.au/Council/Council-meetings",
+      "hashtag": "Mansfield"
+    },
+    {
+      "id": "mitchell",
+      "name": "Mitchell Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.mitchellshire.vic.gov.au/council/council-meetings",
+      "hashtag": "Mitchell"
+    },
+    {
+      "id": "moira",
+      "name": "Moira Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.moira.vic.gov.au/Our-Council/Council-meetings",
+      "hashtag": "Moira"
+    },
+    {
+      "id": "murrindindi",
+      "name": "Murrindindi Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.murrindindi.vic.gov.au/Council/Council-meetings",
+      "hashtag": "Murrindindi"
+    },
+    {
+      "id": "strathbogie",
+      "name": "Strathbogie Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.strathbogie.vic.gov.au/council/meetings",
+      "hashtag": "Strathbogie"
+    },
+    {
+      "id": "towong",
+      "name": "Towong Shire",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.towong.vic.gov.au/council-meetings",
+      "hashtag": "Towong"
+    },
+    {
+      "id": "wodonga",
+      "name": "Wodonga City",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.wodonga.vic.gov.au/Your-Council/Council-meetings",
+      "hashtag": "Wodonga"
+    },
+    {
+      "id": "wangaratta",
+      "name": "Wangaratta Rural City",
+      "region": "Hume",
+      "type": "generic",
+      "meeting_url": "https://www.wangaratta.vic.gov.au/Your-Council/Council-meetings",
+      "hashtag": "Wangaratta"
+    },
+    {
+      "id": "bass_coast",
+      "name": "Bass Coast Shire",
+      "region": "Gippsland",
+      "type": "generic",
+      "meeting_url": "https://www.basscoast.vic.gov.au/our-council/council-meetings",
+      "hashtag": "BassCoast"
+    },
+    {
+      "id": "baw_baw",
+      "name": "Baw Baw Shire",
+      "region": "Gippsland",
+      "type": "generic",
+      "meeting_url": "https://www.bawbawshire.vic.gov.au/Council/Our-Council/Council-meetings",
+      "hashtag": "BawBaw"
+    },
+    {
+      "id": "east_gippsland",
+      "name": "East Gippsland Shire",
+      "region": "Gippsland",
+      "type": "generic",
+      "meeting_url": "https://www.eastgippsland.vic.gov.au/our-council/council-meetings",
+      "hashtag": "EastGippsland"
+    },
+    {
+      "id": "latrobe",
+      "name": "Latrobe City",
+      "region": "Gippsland",
+      "type": "generic",
+      "meeting_url": "https://www.latrobe.vic.gov.au/Council/Council_meetings",
+      "hashtag": "Latrobe"
+    },
+    {
+      "id": "south_gippsland",
+      "name": "South Gippsland Shire",
+      "region": "Gippsland",
+      "type": "generic",
+      "meeting_url": "https://www.southgippsland.vic.gov.au/council-meetings",
+      "hashtag": "SouthGippsland"
+    },
+    {
+      "id": "wellington",
+      "name": "Wellington Shire",
+      "region": "Gippsland",
+      "type": "generic",
+      "meeting_url": "https://www.wellington.vic.gov.au/council/council-meetings",
+      "hashtag": "Wellington"
+    },
+    {
+      "id": "ballarat",
+      "name": "Ballarat City",
+      "region": "Central Highlands",
+      "type": "generic",
+      "meeting_url": "https://www.ballarat.vic.gov.au/city-and-council/council-meetings",
+      "hashtag": "Ballarat"
+    },
+    {
+      "id": "moorabool",
+      "name": "Moorabool Shire",
+      "region": "Central Highlands",
+      "type": "generic",
+      "meeting_url": "https://www.moorabool.vic.gov.au/Council/Council-meetings",
+      "hashtag": "Moorabool"
+    },
+    {
+      "id": "golden_plains",
+      "name": "Golden Plains Shire",
+      "region": "Central Highlands",
+      "type": "generic",
+      "meeting_url": "https://www.goldenplains.vic.gov.au/residents/my-council/council-meetings",
+      "hashtag": "GoldenPlains"
+    },
+    {
+      "id": "moyne",
+      "name": "Moyne Shire",
+      "region": "Barwon South West",
+      "type": "generic",
+      "meeting_url": "https://www.moyne.vic.gov.au",
+      "hashtag": "Moyne"
+    }
+  ]
+}

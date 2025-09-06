@@ -1,0 +1,52 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//All 79 VIC Councils Meetings//EN
+BEGIN:VEVENT
+UID:Monash_City_Council@vic_councils
+DTSTAMP:20250906T040629Z
+DTSTART;TZID=Australia/Melbourne:20250930T190000
+SUMMARY:Monash City Council Meeting
+LOCATION:Monash Civic Centre, 293 Springvale Rd, Glen Waverley
+DESCRIPTION:Council meeting\nWebcast: https://www.monash.vic.gov.au/About-Us/Council/Council-Meetings/Council-Meetings-Schedule\nSource: https://www.monash.vic.gov.au/About-Us/Council/Council-Meetings/Council-Meetings-Schedule
+END:VEVENT
+BEGIN:VEVENT
+UID:City_of_Melbourne@vic_councils
+DTSTAMP:20250906T040629Z
+DTSTART;TZID=Australia/Melbourne:20250930T173000
+SUMMARY:City of Melbourne Meeting
+LOCATION:Melbourne Town Hall, Administration Building
+DESCRIPTION:Council meeting\nWebcast: https://www.melbourne.vic.gov.au/council-meetings\nSource: https://www.melbourne.vic.gov.au/council-meetings
+END:VEVENT
+BEGIN:VEVENT
+UID:Frankston_City_Council@vic_councils
+DTSTAMP:20250906T040629Z
+DTSTART;TZID=Australia/Melbourne:20250915T190000
+SUMMARY:Frankston City Council Meeting
+LOCATION:Civic Centre, 30 Davey Street, Frankston
+DESCRIPTION:Council meeting\nWebcast: https://www.frankston.vic.gov.au/Council/Council-and-committee-meetings/Upcoming-Council-Meeting-Agendas-2025\nSource: https://www.frankston.vic.gov.au/Council/Council-and-committee-meetings/Upcoming-Council-Meeting-Agendas-2025
+END:VEVENT
+BEGIN:VEVENT
+UID:City_of_Greater_Geelong@vic_councils
+DTSTAMP:20250906T040629Z
+DTSTART;TZID=Australia/Melbourne:20250923T180000
+SUMMARY:City of Greater Geelong Meeting
+LOCATION:City Hall, 30 Gheringhap Street, Geelong
+DESCRIPTION:Council meeting\nWebcast: https://www.geelongaustralia.com.au/meetings/\nSource: https://www.geelongaustralia.com.au/meetings/
+END:VEVENT
+BEGIN:VEVENT
+UID:Borough_of_Queenscliffe@vic_councils
+DTSTAMP:20250906T040629Z
+DTSTART;TZID=Australia/Melbourne:20250918T190000
+SUMMARY:Borough of Queenscliffe Meeting
+LOCATION:Queenscliff Town Hall, 50 Learmonth Street, Queenscliff
+DESCRIPTION:Council meeting\nWebcast: https://www.queenscliffe.vic.gov.au/council/meetings/council-meetings\nSource: https://www.queenscliffe.vic.gov.au/council/meetings/council-meetings
+END:VEVENT
+BEGIN:VEVENT
+UID:City_of_Ballarat@vic_councils
+DTSTAMP:20250906T040629Z
+DTSTART;TZID=Australia/Melbourne:20250924T183000
+SUMMARY:City of Ballarat Meeting
+LOCATION:Ballarat Town Hall, 225 Sturt Street, Ballarat
+DESCRIPTION:Council meeting\nWebcast: https://www.ballarat.vic.gov.au/city-and-council/council-meetings\nSource: https://www.ballarat.vic.gov.au/city-and-council/council-meetings
+END:VEVENT
+END:VCALENDAR

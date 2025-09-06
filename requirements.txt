@@ -1,9 +1,34 @@
-requests==2.31.0
-beautifulsoup4==4.12.3
-python-dateutil==2.8.2
-cloudscraper==1.2.71
-PyPDF2==3.0.1
-anthropic==0.25.0
-# BlueSky client; newer versions fix API model mismatches
+# Core dependencies
+requests>=2.31.0
+beautifulsoup4>=4.12.3
+lxml>=4.9.3
+python-dateutil>=2.8.2
+
+# BlueSky integration
 atproto>=0.0.49,<1.0
+atproto-client>=0.0.48
+
+# Web scraping
+cloudscraper>=1.2.71
 selenium>=4.12.0
+webdriver-manager>=4.0.1
+
+# PDF processing
+PyPDF2>=3.0.1
+pdfplumber>=0.10.3
+
+# AI/LLM (optional)
+anthropic>=0.25.0
+
+# Data processing
+pandas>=2.1.0
+
+# Utilities
+python-dotenv>=1.0.0
+click>=8.1.7
+
+# Development & Testing
+pytest>=7.4.3
+pytest-cov>=4.1.0
+black>=23.11.0
+flake8>=6.1.0

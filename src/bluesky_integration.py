@@ -140,6 +140,18 @@ class BlueSkyPoster:
             self._post_index[url_only] = {'uri': resp.uri, 'cid': resp.cid}
             self._save_posted_docs()
 
+            # Append to posts log for easy tracking in repo
+            try:
+                ts = datetime.utcnow().isoformat(timespec='seconds') + 'Z'
+                line = f"- {ts} | {council_name} | {doc_type} | {date_str or ''} | {doc_url} | {resp.uri}\n"
+                if not os.path.exists('posts.md'):
+                    with open('posts.md', 'w') as f:
+                        f.write('# Posted Items\n\n')
+                with open('posts.md', 'a') as f:
+                    f.write(line)
+            except Exception:
+                pass
+
             print(f"✅ Posted: {doc_title}")
             return True
 
