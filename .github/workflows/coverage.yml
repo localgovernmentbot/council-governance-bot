@@ -1,0 +1,48 @@
+name: CouncilBot Coverage
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.txt
+
+      - name: Run unified scraper
+        run: |
+          python m9_unified_scraper.py
+
+      - name: Generate coverage report (±30d)
+        env:
+          FRESH_MINUTES_LAST_DAYS: '30'
+          FRESH_AGENDAS_LAST_DAYS: '30'
+          FRESH_AGENDAS_NEXT_DAYS: '30'
+        run: |
+          python scripts/coverage_report.py | tee COVERAGE_SUMMARY.txt
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ github.run_number }}
+          path: |
+            m9_scraper_results.json
+            coverage_summary.json
+            COVERAGE_SUMMARY.txt
+          if-no-files-found: error
+          retention-days: 14
+
