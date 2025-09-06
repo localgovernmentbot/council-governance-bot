@@ -52,12 +52,17 @@ class BlueSkyPoster:
         with open(self.posted_file, 'w') as f:
             json.dump(payload, f, indent=2)
     
-    def _create_doc_hash(self, council_name, doc_title, doc_url):
-        """Create unique hash for a document"""
-        # Canonicalize URL so redirects and direct links collide
+    def _hash_url_only(self, council_name, doc_url):
+        """Stable hash based on council + canonical URL only (title-agnostic)."""
         canon = canonicalize_doc_url(doc_url)
-        content = f"{council_name}|{doc_title}|{canon}"
-        return hashlib.md5(content.encode()).hexdigest()
+        return hashlib.md5(f"{council_name}|{canon}".encode()).hexdigest()
+
+    def _legacy_hashes(self, council_name, doc_title, doc_url):
+        """Return legacy hashes used previously for backward compatibility."""
+        canon = canonicalize_doc_url(doc_url)
+        h_canon_with_title = hashlib.md5(f"{council_name}|{doc_title}|{canon}".encode()).hexdigest()
+        h_raw_with_title = hashlib.md5(f"{council_name}|{doc_title}|{doc_url}".encode()).hexdigest()
+        return h_canon_with_title, h_raw_with_title
     
     def post_document(self, council_name, doc_type, doc_title, doc_url, 
                       date_str=None, council_hashtag=None):
@@ -75,10 +80,10 @@ class BlueSkyPoster:
         Returns:
             bool: True if posted successfully, False otherwise
         """
-        # Check if already posted (support legacy hashes on raw URL too)
-        canon_hash = self._create_doc_hash(council_name, doc_title, doc_url)
-        raw_hash = hashlib.md5(f"{council_name}|{doc_title}|{doc_url}".encode()).hexdigest()
-        if canon_hash in self.posted_docs or raw_hash in self.posted_docs:
+        # Check if already posted (url-only and legacy title-based)
+        url_only = self._hash_url_only(council_name, doc_url)
+        h_canon_title, h_raw_title = self._legacy_hashes(council_name, doc_title, doc_url)
+        if any(h in self.posted_docs for h in (url_only, h_canon_title, h_raw_title)):
             return False
         
         # Create post text (no emojis, plain clickable URL)
@@ -126,12 +131,13 @@ class BlueSkyPoster:
                 resp = client.send_post(text=post_text)
 
             # Mark as posted and index the root post
-            # Save both canonical and raw hashes for backward compatibility
-            self.posted_docs.add(canon_hash)
-            self.posted_docs.add(raw_hash)
+            # Save url-only plus legacy hashes for backward compatibility
+            self.posted_docs.add(url_only)
+            self.posted_docs.add(h_canon_title)
+            self.posted_docs.add(h_raw_title)
             if not hasattr(self, '_post_index'):
                 self._post_index = {}
-            self._post_index[canon_hash] = {'uri': resp.uri, 'cid': resp.cid}
+            self._post_index[url_only] = {'uri': resp.uri, 'cid': resp.cid}
             self._save_posted_docs()
 
             print(f"✅ Posted: {doc_title}")
@@ -188,8 +194,12 @@ class BlueSkyPoster:
             return False
 
         # Fetch the stored root reference
-        doc_hash = self._create_doc_hash(council_name, doc_title, doc_url)
-        ref = getattr(self, '_post_index', {}).get(doc_hash)
+        # Try url-only, then legacy indices
+        url_only = self._hash_url_only(council_name, doc_url)
+        ref = getattr(self, '_post_index', {}).get(url_only)
+        if not ref:
+            h_canon_title, h_raw_title = self._legacy_hashes(council_name, doc_title, doc_url)
+            ref = getattr(self, '_post_index', {}).get(h_canon_title) or getattr(self, '_post_index', {}).get(h_raw_title)
         if not ref:
             return ok
 

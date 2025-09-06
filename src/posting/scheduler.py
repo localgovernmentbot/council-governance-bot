@@ -84,10 +84,12 @@ class Scheduler:
 
     @staticmethod
     def _doc_hashes(council_name: str, title: str, url: str):
-        """Return both raw and canonicalized hashes for backward compatibility."""
-        raw = hashlib.md5(f"{council_name}|{title}|{url}".encode()).hexdigest()
-        canon = hashlib.md5(f"{council_name}|{title}|{canonicalize_doc_url(url)}".encode()).hexdigest()
-        return raw, canon
+        """Return url-only and legacy title-based hashes for compatibility."""
+        canon_url = canonicalize_doc_url(url)
+        url_only = hashlib.md5(f"{council_name}|{canon_url}".encode()).hexdigest()
+        legacy_raw = hashlib.md5(f"{council_name}|{title}|{url}".encode()).hexdigest()
+        legacy_canon = hashlib.md5(f"{council_name}|{title}|{canon_url}".encode()).hexdigest()
+        return {url_only, legacy_canon, legacy_raw}
 
     def _is_fresh(self, doc: Dict) -> bool:
         try:
@@ -108,8 +110,8 @@ class Scheduler:
             # Baseline policy: post all agendas/minutes; prioritize fresh first
             if not self._is_fresh(d):
                 continue
-            raw_h, canon_h = self._doc_hashes(d['council_name'], d['title'], d['url'])
-            if raw_h in self.already_posted or canon_h in self.already_posted:
+            hashes = self._doc_hashes(d['council_name'], d['title'], d['url'])
+            if any(h in self.already_posted for h in hashes):
                 continue
             candidates.append(QueueItem(
                 council_name=d['council_name'],
