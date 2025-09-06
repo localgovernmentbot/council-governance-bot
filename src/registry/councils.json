@@ -37,4 +37,6 @@
   {"id": "MITC", "name": "Mitchell Shire Council", "type": "infocouncil", "base": "https://mitchell.infocouncil.biz"},
   {"id": "MELB-DP", "name": "City of Melbourne", "type": "direct_page", "page_url": "https://www.melbourne.vic.gov.au/about-council/committees-meetings/meeting-archive/pages/meeting-archive.aspx", "base": "https://www.melbourne.vic.gov.au", "link_selector": "a[href$='.pdf']"},
   {"id": "HOBS-DP", "name": "Hobsons Bay City Council", "type": "direct_page", "page_url": "https://www.hobsonsbay.vic.gov.au/Council/Council-meetings", "base": "https://www.hobsonsbay.vic.gov.au", "link_selector": "a[href$='.pdf']"}
+  ,{"id": "MERR-DP", "name": "Merri-bek City Council", "type": "direct_page", "page_url": "https://www.merri-bek.vic.gov.au/my-council/council-and-committee-meetings/council-meetings/council-meeting-minutes/", "base": "https://www.merri-bek.vic.gov.au", "link_selector": "a[href$='.pdf']"}
+  ,{"id": "MOON-DP", "name": "Moonee Valley City Council", "type": "direct_page", "page_url": "https://mvcc.vic.gov.au/my-council/council-meetings/", "base": "https://mvcc.vic.gov.au", "link_selector": "a[href$='.pdf']"}
 ]
