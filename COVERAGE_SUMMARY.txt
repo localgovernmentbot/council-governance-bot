@@ -1,0 +1,58 @@
+Coverage Report (±30 days)
+Active councils: 5  Zero councils: 47
+
+Top active councils:
+- Port Phillip City Council: 5 total (3 agendas, 2 minutes)
+- Brimbank City Council: 3 total (2 agendas, 1 minutes)
+- Merri-bek City Council: 3 total (3 agendas, 0 minutes)
+- Moonee Valley City Council: 2 total (1 agendas, 1 minutes)
+- City of Melbourne: 1 total (0 agendas, 1 minutes)
+
+Councils with zero items in window (47):
+- Banyule City Council
+- Banyule City Council (schedule)
+- Bayside City Council
+- Boroondara City Council
+- Campaspe Shire Council
+- Cardinia Shire Council
+- Central Goldfields Shire
+- City of Ballarat
+- City of Ballarat (meetings)
+- City of Casey
+- City of Greater Bendigo
+- City of Greater Bendigo (meetings)
+- City of Greater Geelong
+- City of Greater Geelong (meetings)
+- City of Kingston
+- Colac Otway Shire
+- Darebin City Council
+- Frankston City Council
+- Glen Eira City Council
+- Greater Dandenong City Council
+- Greater Shepparton City Council
+- Hobsons Bay City Council
+- Hume City Council
+- Kingston City Council
+- Knox City Council
+- Loddon Shire Council
+- Manningham City Council
+- Maribyrnong City Council
+- Maroondah City Council
+- Melton City Council
+- Mildura Rural City Council
+- Mitchell Shire Council
+- Moira Shire Council
+- Monash City Council
+- Moorabool Shire Council
+- Mornington Peninsula Shire
+- Nillumbik Shire Council
+- Stonnington City Council
+- Surf Coast Shire Council
+- Swan Hill Rural City Council
+- Whitehorse City Council
+- Whitehorse City Council (dates)
+- Whittlesea City Council
+- Wyndham City Council
+- Yarra City Council
+- Yarra Ranges Council
+- Yarra Ranges Council (schedule)
