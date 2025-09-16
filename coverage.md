@@ -2,7 +2,7 @@
 
 ![coverage](https://img.shields.io/badge/Coverage-10%25-lightgrey)
 
-- Generated: 2025-09-13T09:26:20.455309
+- Generated: 2025-09-16T09:36:04.248615
 - Active councils: 5 / 52
 
 | Council | Status | Last Date | Agendas | Minutes | Total |
