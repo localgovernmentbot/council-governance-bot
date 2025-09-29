@@ -2,15 +2,15 @@
 
 ![coverage](https://img.shields.io/badge/Coverage-10%25-lightgrey)
 
-- Generated: 2025-09-24T09:37:37.379208
+- Generated: 2025-09-29T09:42:17.490290
 - Active councils: 5 / 52
 
 | Council | Status | Last Date | Agendas | Minutes | Total |
 |---|---|---:|---:|---:|---:|
+| Port Phillip City Council | active | 2025-09-24 | 3 | 3 | 6 |
 | Merri-bek City Council | active | 2025-09-10 | 3 | 2 | 5 |
-| Port Phillip City Council | active | 2025-09-24 | 3 | 2 | 5 |
-| Moonee Valley City Council | active | 2025-09-23 | 2 | 1 | 3 |
 | Brimbank City Council | active | 2025-09-16 | 1 | 1 | 2 |
+| Moonee Valley City Council | active | 2025-09-23 | 1 | 1 | 2 |
 | City of Melbourne | active | 2025-09-01 | 0 | 1 | 1 |
 | Banyule City Council | zero |  | 0 | 0 | 0 |
 | Banyule City Council (schedule) | zero |  | 0 | 0 | 0 |

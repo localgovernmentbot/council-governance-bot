@@ -2,10 +2,10 @@ Coverage Report (±30 days)
 Active councils: 5  Zero councils: 47
 
 Top active councils:
+- Port Phillip City Council: 6 total (3 agendas, 3 minutes)
 - Merri-bek City Council: 5 total (3 agendas, 2 minutes)
-- Port Phillip City Council: 5 total (3 agendas, 2 minutes)
-- Moonee Valley City Council: 3 total (2 agendas, 1 minutes)
 - Brimbank City Council: 2 total (1 agendas, 1 minutes)
+- Moonee Valley City Council: 2 total (1 agendas, 1 minutes)
 - City of Melbourne: 1 total (0 agendas, 1 minutes)
 
 Councils with zero items in window (47):
