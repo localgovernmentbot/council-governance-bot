@@ -28,9 +28,9 @@ from src.bluesky_integration import BlueSkyPoster
 from src.utils.url_canonicalize import canonicalize_doc_url
 
 
-FRESH_MINUTES_LAST_DAYS = int(os.environ.get('FRESH_MINUTES_LAST_DAYS', '7'))
-FRESH_AGENDAS_NEXT_DAYS = int(os.environ.get('FRESH_AGENDAS_NEXT_DAYS', '10'))
-FRESH_AGENDAS_LAST_DAYS = int(os.environ.get('FRESH_AGENDAS_LAST_DAYS', '7'))
+FRESH_MINUTES_LAST_DAYS = int(os.environ.get('FRESH_MINUTES_LAST_DAYS', '14'))
+FRESH_AGENDAS_NEXT_DAYS = int(os.environ.get('FRESH_AGENDAS_NEXT_DAYS', '14'))
+FRESH_AGENDAS_LAST_DAYS = int(os.environ.get('FRESH_AGENDAS_LAST_DAYS', '14'))
 PER_COUNCIL_COOLDOWN_HOURS = int(os.environ.get('PER_COUNCIL_COOLDOWN_HOURS', '6'))
 MAX_POSTS_PER_RUN = int(os.environ.get('MAX_POSTS_PER_RUN', '24'))
 
