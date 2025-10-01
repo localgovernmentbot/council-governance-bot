@@ -12,6 +12,7 @@ atproto>=0.0.49,<1.0
 
 # Advanced scraping (for councils that need it)
 cloudscraper>=1.2.71
+selenium>=4.15.0
 
 # PDF processing
 PyPDF2>=3.0.1
