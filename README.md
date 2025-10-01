@@ -154,6 +154,27 @@ Key areas for contribution:
 - Enhancing document detection
 - Testing and bug reports
 
+## 📝 Documentation
+
+**[📚 DOCUMENTATION INDEX](DOCUMENTATION_INDEX.md)** - Complete guide to all project documentation
+
+### Key Documents
+- **[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)** - Comprehensive project context and development guide (⭐ Start here for full understanding)
+- **[CHANGELOG.md](CHANGELOG.md)** - Detailed change history and recent improvements
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Quick reference for common issues
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical architecture details
+- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Contribution guidelines
+- **[EXPANSION_PLAN.md](EXPANSION_PLAN.md)** - Roadmap for expanding to all 79 councils
+
+### Recent Updates (October 2025)
+
+- ✅ **Timeout Protection**: Each council now has a 120-second timeout limit
+- ✅ **Enhanced Logging**: Clear progress indicators and timing data
+- ✅ **Workflow Reliability**: 15-minute maximum job time
+- ✅ **PyPDF2 Compatibility**: Fixed import errors for posting workflow
+
+See [CHANGELOG.md](CHANGELOG.md) for full details.
+
 ## 📝 Architecture
 
 See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for technical details.
