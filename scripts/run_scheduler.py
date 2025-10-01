@@ -8,6 +8,7 @@ in sequence (one pass; rely on cron for real hourly cadence).
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -22,7 +23,12 @@ def main():
     p.add_argument('--results', default='m9_scraper_results.json')
     p.add_argument('--posted-file', default='posted_bluesky.json')
     p.add_argument('--live', action='store_true', help='Post to BlueSky instead of dry-run')
+    p.add_argument('--max-posts', type=int, help='Maximum number of posts per run')
     args = p.parse_args()
+
+    # Set MAX_POSTS_PER_RUN environment variable if provided
+    if args.max_posts is not None:
+        os.environ['MAX_POSTS_PER_RUN'] = str(args.max_posts)
 
     sched = Scheduler(results_path=args.results, posted_file=args.posted_file, dry_run=not args.live)
     actions = sched.run()
