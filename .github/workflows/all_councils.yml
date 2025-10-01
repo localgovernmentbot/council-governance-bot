@@ -45,6 +45,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-workflow.txt
     
+    - name: Set up Chrome and ChromeDriver
+      uses: browser-actions/setup-chrome@latest
+      with:
+        chrome-version: stable
+    
     - name: Run universal scraper
       run: |
         if [ "${{ github.event.inputs.councils }}" != "" ]; then
@@ -125,6 +130,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-workflow.txt
+    
+    - name: Set up Chrome and ChromeDriver
+      uses: browser-actions/setup-chrome@latest
+      with:
+        chrome-version: stable
     
     - name: Run scraper
       run: |
