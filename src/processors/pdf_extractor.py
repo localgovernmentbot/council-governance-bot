@@ -4,7 +4,10 @@ Extracts text from council PDFs for AI summarization
 """
 
 import requests
-import PyPDF2
+try:
+    import pypdf as PyPDF2  # PyPDF2 3.x renamed to pypdf
+except ImportError:
+    import PyPDF2  # Fall back to old name for compatibility
 from io import BytesIO
 import re
 from typing import Optional, List

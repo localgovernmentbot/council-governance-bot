@@ -14,11 +14,13 @@ atproto>=0.0.49,<1.0
 cloudscraper>=1.2.71
 selenium>=4.15.0
 
-# PDF processing
-PyPDF2>=3.0.1
+# PDF processing (needed by scheduler's pdf_extractor)
+pypdf2>=3.0.1
+pdfplumber>=0.10.3
 
 # Data processing
 pandas>=2.1.0
 
 # Utilities
 python-dotenv>=1.0.0
+click>=8.1.7
