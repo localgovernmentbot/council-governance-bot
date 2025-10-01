@@ -175,3 +175,11 @@ if working_count == 9:
 
 print(f"\nFINAL STATUS: {working_count}/9 councils operational!")
 print(f"Total of {len(all_documents)} documents ready for processing.")
+
+# Exit with error if no documents were found
+if len(all_documents) == 0:
+    print("\n⚠️  WARNING: No documents were scraped. This may indicate a problem.")
+    sys.exit(1)
+
+# Exit successfully
+sys.exit(0)

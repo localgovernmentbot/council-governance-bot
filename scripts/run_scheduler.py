@@ -26,12 +26,25 @@ def main():
     p.add_argument('--max-posts', type=int, help='Maximum number of posts per run')
     args = p.parse_args()
 
+    # Check if results file exists
+    results_path = Path(args.results)
+    if not results_path.exists():
+        print(f"Error: Results file not found: {args.results}")
+        print("Please run the scraper first to generate results.")
+        sys.exit(1)
+
     # Set MAX_POSTS_PER_RUN environment variable if provided
     if args.max_posts is not None:
         os.environ['MAX_POSTS_PER_RUN'] = str(args.max_posts)
 
-    sched = Scheduler(results_path=args.results, posted_file=args.posted_file, dry_run=not args.live)
-    actions = sched.run()
+    try:
+        sched = Scheduler(results_path=args.results, posted_file=args.posted_file, dry_run=not args.live)
+        actions = sched.run()
+    except Exception as e:
+        print(f"Error running scheduler: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
 
     if not args.live:
         print("Preview schedule (no publishing):")

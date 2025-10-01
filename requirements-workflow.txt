@@ -1,0 +1,23 @@
+# Minimal requirements for GitHub Actions workflows
+# This file contains only the dependencies actually needed for scraping and posting
+
+# Core scraping dependencies
+requests>=2.31.0
+beautifulsoup4>=4.12.3
+lxml>=4.9.3
+python-dateutil>=2.8.2
+
+# BlueSky integration
+atproto>=0.0.49,<1.0
+
+# Advanced scraping (for councils that need it)
+cloudscraper>=1.2.71
+
+# PDF processing
+PyPDF2>=3.0.1
+
+# Data processing
+pandas>=2.1.0
+
+# Utilities
+python-dotenv>=1.0.0
