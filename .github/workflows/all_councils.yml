@@ -1,11 +1,11 @@
 name: All Victorian Councils Bot
 
 on:
-  schedule:
-    # Run scraping every 6 hours
-    - cron: '0 */6 * * *'
-    # Post to BlueSky every hour
-    - cron: '5 * * * *'
+  # schedule:
+  #   # Run scraping every 6 hours
+  #   - cron: '0 */6 * * *'
+  #   # Post to BlueSky every hour
+  #   - cron: '5 * * * *'
   workflow_dispatch:
     inputs:
       action:

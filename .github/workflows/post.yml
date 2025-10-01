@@ -1,8 +1,8 @@
 name: Post to BlueSky
 
 on:
-  schedule:
-    - cron: '35 * * * *'  # Run at :35 every hour
+  # schedule:
+  #   - cron: '35 * * * *'  # Run at :35 every hour
   workflow_dispatch:
     inputs:
       max_posts:
