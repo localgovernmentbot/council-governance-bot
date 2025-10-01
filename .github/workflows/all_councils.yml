@@ -30,6 +30,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: (github.event_name == 'schedule' && contains(github.event.schedule, '0 */6')) || (github.event_name == 'workflow_dispatch' && contains(github.event.inputs.action, 'scrape'))
     
     steps:
@@ -116,6 +117,7 @@ jobs:
 
   both:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'both'
     
     steps:
